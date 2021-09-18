@@ -1,4 +1,5 @@
-package server;
+package com.disnake.snake;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
@@ -8,37 +9,27 @@ import java.net.Socket;
 import java.util.Date;
 
 
-public class Server
-{
-    public static void main(String[] args) throws Exception
-    {
+public class Server {
+    public static void main(String[] args) throws Exception {
         ServerSocket listener = new ServerSocket(4000);
         String line;
-        try
-        {
-            while (true)
-            {
+        try {
+            while (true) {
                 Socket socket = listener.accept();
                 BufferedReader readerChannel = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 BufferedWriter writerChannel = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-                try
-                {
+                try {
                     writerChannel.write(new Date().toString() + "\n\r");
                     writerChannel.flush();
 
-                    while ((line = readerChannel.readLine()) != null)
-                    {
+                    while ((line = readerChannel.readLine()) != null) {
                         System.out.println(line);
                     }
-                }
-                finally
-                {
+                } finally {
                     socket.close();
                 }
             }
-        }
-        finally
-        {
+        } finally {
             listener.close();
         }
     }
