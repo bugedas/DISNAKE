@@ -23,7 +23,7 @@ public class Server {
                     writerChannel.flush();
 
                     while ((line = readerChannel.readLine()) != null) {
-                        System.out.println(line);
+                        System.out.println("Server:" + line);
                     }
                 } finally {
                     socket.close();
