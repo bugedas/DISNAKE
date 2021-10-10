@@ -52,7 +52,7 @@ public class Client_listener implements Runnable {
 					}
 					break;
 				case 1:
-					client.print("<HTML><h2>On commence dans " + buffer.get() + " secondes</h2></HTML>");
+					client.print("<HTML><h2>The game starts in " + buffer.get() + " seconds</h2></HTML>");
 					break;
 				case 2:
 					if (pasLancerDir) {
