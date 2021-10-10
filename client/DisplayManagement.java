@@ -1,15 +1,11 @@
 package client;
 
-import java.awt.Color;
-import java.awt.EventQueue;
-import java.awt.Graphics;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.ArrayBlockingQueue;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 
 // NORMALEMENT OK : interface graphique + gestion des demandes du clavier
 @SuppressWarnings("serial")
@@ -43,8 +39,7 @@ public class DisplayManagement extends JComponent implements KeyListener {
 	}
 
 	private void setgraph(String serverName, int num) {
-		graph = new JFrame("JEU SNAKE MULTIJOUEUR SUR "
-				+ serverName.toUpperCase() + " VOUS ETES LE JOUEUR " + num);
+		graph = new JFrame(serverName.toUpperCase());
 		addKeyListener(this);
 		graph.setBounds(400, 100, (size+1) * cellSize, (size + 3) * cellSize);
 		a.setBounds(size * cellSize/4,size * cellSize/2, size * cellSize, size * cellSize/4);

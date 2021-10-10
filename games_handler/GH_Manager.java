@@ -1,15 +1,15 @@
 package games_handler;
 
 import game.Game;
-
-import java.io.IOException;
-//import java.util.HashSet;
-//import java.util.LinkedList;
-import java.util.concurrent.ArrayBlockingQueue;
-
-//import utilities.Client;
 import utilities.Job;
 import utilities.Runnable_Input;
+
+import java.io.IOException;
+import java.util.concurrent.ArrayBlockingQueue;
+
+//import java.util.HashSet;
+//import java.util.LinkedList;
+//import utilities.Client;
 
 public class GH_Manager implements Runnable{
 	/**
@@ -26,14 +26,13 @@ public class GH_Manager implements Runnable{
 	private ArrayBlockingQueue<Job> in_communicator;
 	//private HashSet<Byte> jobAlreadyDone;
 	private int nextPortToUseForGame, nbPlayers;
-	
-	
-	public GH_Manager(int inputPort, int outputPort, String serverName, long broadcastTimeInterval, int nbP) throws IOException{
-		/**
-		 * A GameHandler_Manager:
-		 * - listening on port inputPort (using 1 Thread)
-		 * - broadcasting this inputPort and the serverName every broadcastTimeInterval (ms) on outputPort (using another Thread)
-		 */
+	public int inputPort = 0;
+	public int outputPort = 0;
+	public int nbP = 0;
+	public String serverName = "test server";
+	public int broadcastTimeInterval = 0;
+
+	public void start() throws IOException {
 		nbPlayers = Math.max(1, Math.min(nbP, 4));
 		System.out.println("GH_Manager has been initialized:");
 		
@@ -47,8 +46,6 @@ public class GH_Manager implements Runnable{
 		System.out.println("\t> END");
 		//jobAlreadyDone=new HashSet<Byte>();
 		nextPortToUseForGame=30000;
-		
-		
 	}
 
 	@Override
