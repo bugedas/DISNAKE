@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import utilities.Apple;
+import utilities.Poison;
 import utilities.Client;
 import utilities.Job;
 import utilities.Point;
@@ -27,7 +28,8 @@ public class Game extends Thread {
 	public HashMap<Integer,Snake> snakes;
 	public HashSet<Snake> snakesAtStart;
 	public Apple apple;
-	
+	public Poison poison;
+
 	public G_Manager manager;
 	private long multicastTimeInterval = 50;// 50 ms
 	
@@ -84,6 +86,7 @@ public class Game extends Thread {
 			
 			System.out.println("Game sent a job \""+ j.type() +"\" to Runnable_Output for Client "+c.id);
 			resetApple();
+			resetPoison();
 			if(!this.hasRoom()) waitForClients=false;
 		}
 			
@@ -91,6 +94,10 @@ public class Game extends Thread {
 	
 	public void resetApple(){
 		this.apple=new Apple();
+	}
+
+	public void resetPoison(){
+		this.poison=new Poison();
 	}
 
 	public void removeClient(Client c) {

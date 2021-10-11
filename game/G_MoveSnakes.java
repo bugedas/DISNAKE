@@ -32,7 +32,13 @@ public class G_MoveSnakes implements Runnable {
 							s.score+=100;
 							thisGame.resetApple();
 							counter = 0;
-						} else {
+						} else if (s.isInCollision(thisGame.poison.a)) {
+							s.grow();
+							s.score-=100;
+							thisGame.resetPoison();
+							counter = 0;
+						}
+						else {
 							s.move();
 							s.score+=1;
 						}
@@ -63,6 +69,8 @@ public class G_MoveSnakes implements Runnable {
 			}
 			if (counter % GameOptions.appleLifeTime == 0)
 				thisGame.resetApple();
+			if (counter % GameOptions.poisonLifeTime == 0)
+				thisGame.resetPoison();
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {

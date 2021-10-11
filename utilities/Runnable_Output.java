@@ -54,6 +54,7 @@ public class Runnable_Output extends UDP_Sender implements Runnable {
 							buffer = Snake
 									.encodeAllSnakes(this.manager.thisGame.snakes);
 							buffer.put(this.manager.thisGame.apple.toBuffer());
+							buffer.put(this.manager.thisGame.poison.toBuffer());
 						}
 						buffer.flip();
 						this.send(buffer);
