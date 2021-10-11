@@ -3,7 +3,8 @@ package utilities;
 public class GameOptions {
 	
 	public final static int gridSize=1<<7-1;
-	public final static int appleLifeTime=100;
+	public final static int foodLifeTime=100;
+	//public final static int poisonLifeTime=100;
 	public static final byte WEST = 0, NORTH = 1, EAST = 2, SOUTH = 3;
 	
 	public static void main(String[] args) {

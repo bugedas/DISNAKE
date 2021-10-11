@@ -27,12 +27,13 @@ public class G_MoveSnakes implements Runnable {
 						if (s != killer)
 							killer.score += 1000;
 					} else {
-						if (s.isInCollision(thisGame.apple.a)) {
+						if (s.isInCollision(thisGame.food.a)) {
 							s.grow();
-							s.score+=100;
-							thisGame.resetApple();
+							s.score += thisGame.food.foodSize;
+							thisGame.resetFood();
 							counter = 0;
-						} else {
+						}
+						else {
 							s.move();
 							s.score+=1;
 						}
@@ -61,8 +62,10 @@ public class G_MoveSnakes implements Runnable {
 					}else System.out.println("game is still on");
 				}
 			}
-			if (counter % GameOptions.appleLifeTime == 0)
-				thisGame.resetApple();
+			if (counter % GameOptions.foodLifeTime == 0)
+				thisGame.resetFood();
+//			if (counter % GameOptions.poisonLifeTime == 0)
+//				thisGame.resetPoison();
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {

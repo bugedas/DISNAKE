@@ -6,12 +6,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.concurrent.ArrayBlockingQueue;
 
-import utilities.Apple;
-import utilities.Client;
-import utilities.Job;
-import utilities.Point;
-import utilities.Runnable_Output;
-import utilities.Snake;
+import utilities.*;
 
 public class Game extends Thread {
 	// ==========> OBJECT <===============
@@ -26,8 +21,10 @@ public class Game extends Thread {
 	public LinkedList<Snake> remainingSnakes;//Snakes available for new players
 	public HashMap<Integer,Snake> snakes;
 	public HashSet<Snake> snakesAtStart;
-	public Apple apple;
-	
+	public Food food;
+	public int foodChange = 0;
+	public int foodTypes = 2;
+
 	public G_Manager manager;
 	private long multicastTimeInterval = 50;// 50 ms
 	
@@ -83,14 +80,15 @@ public class Game extends Thread {
 			out_communicator.put(j);
 			
 			System.out.println("Game sent a job \""+ j.type() +"\" to Runnable_Output for Client "+c.id);
-			resetApple();
+			resetFood();
 			if(!this.hasRoom()) waitForClients=false;
 		}
 			
 	}
 	
-	public void resetApple(){
-		this.apple=new Apple();
+	public void resetFood(){
+		this.food = GetFoodFactory.getFood(foodChange % foodTypes);
+		foodChange += 1;
 	}
 
 	public void removeClient(Client c) {

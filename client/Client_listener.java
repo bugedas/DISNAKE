@@ -61,6 +61,7 @@ public class Client_listener implements Runnable {
 						client.print("");
 					}
 					lireSerpents(buffer);
+					//client.print(printScores(buffer));
 					break;
 				case 3:
 					if (!gameOver) {
@@ -77,13 +78,24 @@ public class Client_listener implements Runnable {
 		}
 	}
 
+	private String printScores(ByteBuffer buffer) {
+		String s = "<h2>Scores:</h2>";
+//		byte nbSnakes = buffer.get();
+		for (int i = 0; i < 1; i++) {
+			byte num = buffer.get();
+			short score = buffer.getShort();
+			s += "<h3>Snake " + num + " has " + score + " points</h3>";
+		}
+		return s+"</HTML>";
+	}
+
 	private String lireBufferFinal(ByteBuffer buffer) {
-		String s = "<HTML><h2>La partie est finie, voici les scores :</h2>";
+		String s = "<HTML><h2>The game is over. Scores :</h2>";
 		byte nbSnakes = buffer.get();
 		for (int i = 0; i < nbSnakes; i++) {
 			byte num = buffer.get();
 			short score = buffer.getShort();
-			s += "<h3>Le serpent " + num + " a " + score + " point</h3>";
+			s += "<h3>Snake " + num + " has " + score + " points</h3>";
 		}
 		return s+"</HTML>";
 	}
@@ -123,8 +135,8 @@ public class Client_listener implements Runnable {
 				Snake c = new Snake(dir, numSnake, curSnake);
 				snakes.put(numSnake, c);
 			}
-			Point APPLE = new Point(buf.get(), buf.get());
-			return new Pair<HashMap<Byte, Snake>, Point>(snakes, APPLE);
+			Point FOOD = new Point(buf.get(), buf.get());
+			return new Pair<HashMap<Byte, Snake>, Point>(snakes, FOOD);
 		} catch (Exception e) {
 		}
 		throw new Exception("Le message du serveur est mal décodé");
