@@ -24,7 +24,7 @@ class ManagementBackgate implements Runnable {
 				Pair<HashMap<Byte, Snake>, Point> req = (Pair<HashMap<Byte, Snake>, Point>) gateJobs.take();
 				// System.out.print("On a recu un packet de serpents... ");
 				byte[][] backgate = calculBackgate(req.a);
-				backgate[req.b.x][req.b.y] = DisplayManagement.APPLE;
+				backgate[req.b.x][req.b.y] = DisplayManagement.FOOD;
 				gameDisplay.swap(backgate);
 			}
 		} catch (InterruptedException e) {

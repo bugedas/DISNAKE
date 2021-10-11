@@ -61,7 +61,7 @@ public class Client_listener implements Runnable {
 						client.print("");
 					}
 					lireSerpents(buffer);
-					client.print(printScores(buffer));
+					//client.print(printScores(buffer));
 					break;
 				case 3:
 					if (!gameOver) {
@@ -135,9 +135,8 @@ public class Client_listener implements Runnable {
 				Snake c = new Snake(dir, numSnake, curSnake);
 				snakes.put(numSnake, c);
 			}
-			Point APPLE = new Point(buf.get(), buf.get());
-			Point POISON = new Point(buf.get(), buf.get());
-			return new Pair<HashMap<Byte, Snake>, Point>(snakes, POISON);
+			Point FOOD = new Point(buf.get(), buf.get());
+			return new Pair<HashMap<Byte, Snake>, Point>(snakes, FOOD);
 		} catch (Exception e) {
 		}
 		throw new Exception("Le message du serveur est mal décodé");

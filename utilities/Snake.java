@@ -275,7 +275,7 @@ public class Snake {
 			tmp.add(encodeOneSnake(s));
 			size += tmp.getLast().capacity();
 		}
-		ByteBuffer buf = ByteBuffer.allocate(size + 2+2+2);//+2 for the apple +2 for poison?;
+		ByteBuffer buf = ByteBuffer.allocate(size + 2+2);//+2 for the food;
 		byte nb = (byte) S.size();
 		buf.put((byte) 2);// TYPE
 		buf.put(nb);// NB SNAKES
