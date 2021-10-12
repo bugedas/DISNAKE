@@ -5,7 +5,7 @@ public class Client {
 	public int id;
 	public String address;
 	public int listeningPort;
-	
+
 	public Client(String address, int listeningPort, byte id){
 		/**
 		 * Defined by a physical address and a listeningPort
@@ -14,8 +14,7 @@ public class Client {
 		this.address=address;
 		this.listeningPort=listeningPort;
 	}
-	
-	
+
 	@Override
 	public String toString(){
 		return "Client "+this.id+" listening on "+this.address+":"+this.listeningPort;
