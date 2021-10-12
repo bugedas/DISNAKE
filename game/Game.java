@@ -1,12 +1,12 @@
 package game;
 
+import utilities.*;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.concurrent.ArrayBlockingQueue;
-
-import utilities.*;
 
 public class Game extends Thread {
 	// ==========> OBJECT <===============
@@ -66,6 +66,7 @@ public class Game extends Thread {
 			snakesAtStart.add(s);
 
 			Client c=new Client(address, port, s.id);
+			this.snakes.put(c.id, s);
 			
 			ArrayBlockingQueue<Job> out_communicator = new ArrayBlockingQueue<Job>(100);
 			this.manager.out_communicators.put(c, out_communicator);
