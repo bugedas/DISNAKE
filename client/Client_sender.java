@@ -48,7 +48,7 @@ public class Client_sender implements Runnable {
 		ByteBuffer res = ByteBuffer.allocate(4);
 		res.put((byte) 2);
 		res.put(dirId.b);
-		res.put(number);
+		res.put(number);F
 		res.put(dirId.a);
 		res.flip();
 		return res;

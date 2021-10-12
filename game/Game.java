@@ -64,8 +64,8 @@ public class Game extends Thread {
 		if (this.hasRoom() && waitForClients){
 			Snake s=remainingSnakes.removeFirst();
 			snakesAtStart.add(s);
+
 			Client c=new Client(address, port, s.id);
-			this.snakes.put(c.id, s);
 			
 			ArrayBlockingQueue<Job> out_communicator = new ArrayBlockingQueue<Job>(100);
 			this.manager.out_communicators.put(c, out_communicator);
