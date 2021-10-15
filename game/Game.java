@@ -1,6 +1,7 @@
 package game;
 
 import utilities.*;
+import utilities.Factory.*;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -21,9 +22,14 @@ public class Game extends Thread {
 	public LinkedList<Snake> remainingSnakes;//Snakes available for new players
 	public HashMap<Integer,Snake> snakes;
 	public HashSet<Snake> snakesAtStart;
+	AbstractFactory foodFactory = FactoryCreator.getFactory("Food");
+	AbstractFactory drinkFactory = FactoryCreator.getFactory("Drink");
 	public Food food;
-	public int foodChange = 0;
+	public int foodChange = 1;
 	public int foodTypes = 2;
+	public Drink drink;
+	public int drinkChange = 1;
+	public int drinkTypes = 2;
 
 	public G_Manager manager;
 	private long multicastTimeInterval = 50;// 50 ms
@@ -88,8 +94,8 @@ public class Game extends Thread {
 	}
 	
 	public void resetFood(){
-		this.food = GetFoodFactory.getFood(foodChange % foodTypes);
-		foodChange += 1;
+		this.food =  FactoryCreator.getFactory("Food").getFood(this.foodChange % this.foodTypes);
+		this.drink =  FactoryCreator.getFactory("Drink").getDrink(this.drinkChange % this.drinkTypes);
 	}
 
 	public void removeClient(Client c) {

@@ -28,8 +28,11 @@ public class G_MoveSnakes implements Runnable {
 							killer.score += 1000;
 					} else {
 						if (s.isInCollision(thisGame.food.a)) {
-							s.grow();
+							thisGame.drink.effect(s);
+//							s.grow();
 							s.score += thisGame.food.foodSize;
+							thisGame.foodChange += 1;
+							thisGame.drinkChange += 1;
 							thisGame.resetFood();
 							counter = 0;
 						}
@@ -64,8 +67,6 @@ public class G_MoveSnakes implements Runnable {
 			}
 			if (counter % GameOptions.foodLifeTime == 0)
 				thisGame.resetFood();
-//			if (counter % GameOptions.poisonLifeTime == 0)
-//				thisGame.resetPoison();
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {

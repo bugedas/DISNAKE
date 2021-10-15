@@ -61,7 +61,6 @@ public class Client_listener implements Runnable {
 						client.print("");
 					}
 					lireSerpents(buffer);
-					//client.print(printScores(buffer));
 					break;
 				case 3:
 					if (!gameOver) {
@@ -76,17 +75,6 @@ public class Client_listener implements Runnable {
 			}
 		} catch (Exception e) {
 		}
-	}
-
-	private String printScores(ByteBuffer buffer) {
-		String s = "<h2>Scores:</h2>";
-//		byte nbSnakes = buffer.get();
-		for (int i = 0; i < 1; i++) {
-			byte num = buffer.get();
-			short score = buffer.getShort();
-			s += "<h3>Snake " + num + " has " + score + " points</h3>";
-		}
-		return s+"</HTML>";
 	}
 
 	private String lireBufferFinal(ByteBuffer buffer) {

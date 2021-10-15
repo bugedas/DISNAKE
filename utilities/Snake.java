@@ -97,6 +97,20 @@ public class Snake {
 		move();
 	}
 
+	synchronized public void growAmount(int amount) {
+		for(int i=0; i<amount; i++){
+			points.addFirst(null);// will be immediately removed
+			move();
+		}
+	}
+
+	synchronized public void shrinkAmount(int amount) {
+		for(int i=0; i<amount; i++){
+			points.removeFirst();// will be immediately removed
+		}
+//		move();
+	}
+
 	synchronized public boolean isInCollision(Point a) {
 		if (a.equals(head) && a!=head)
 			return true;

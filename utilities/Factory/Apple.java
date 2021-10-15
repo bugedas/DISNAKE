@@ -1,4 +1,4 @@
-package utilities;
+package utilities.Factory;
 
 public class Apple extends Food{
 
