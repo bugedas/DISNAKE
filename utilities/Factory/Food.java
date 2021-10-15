@@ -1,4 +1,7 @@
-package utilities;
+package utilities.Factory;
+
+import utilities.GameOptions;
+import utilities.Point;
 
 import java.nio.ByteBuffer;
 
@@ -7,7 +10,7 @@ public abstract class Food {
     public int foodSize;
 
     public Point generate(){
-        int x=(int) (Math.random()*GameOptions.gridSize);
+        int x=(int) (Math.random()* GameOptions.gridSize);
         int y=(int) (Math.random()*GameOptions.gridSize);
         return new Point(x,y);
     }
