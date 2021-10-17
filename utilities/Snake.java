@@ -4,7 +4,36 @@ import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-public class Snake {
+public class Snake implements Cloneable{
+
+	@Override
+	public Snake clone() {
+		try {
+			return (Snake) super.clone();
+		} catch (CloneNotSupportedException e) {
+			throw new AssertionError();
+		}
+	}
+
+	public Snake clone(Point point, int size, byte id) {
+		try {
+			Snake clone = (Snake) super.clone();
+			clone.id = id;
+			clone.points = new LinkedList<Point>();
+			for (int i = 0; i < size; i++) {
+				Point tmp = new Point(point.x + i, point.y);
+				clone.points.add(tmp);
+			}
+			clone.direction = Direction.East;
+			clone.head = points.getLast();
+			clone.score = 0;
+
+			return clone;
+		} catch (CloneNotSupportedException e) {
+			throw new AssertionError();
+		}
+	}
+
 	enum Direction {
 		West, North, East, South
 	}
