@@ -8,4 +8,9 @@ public class Protein extends Drink{
     public void effect(Snake snake){
         snake.growAmount(5);
     }
+
+    @Override
+    public void eat() {
+
+    }
 }

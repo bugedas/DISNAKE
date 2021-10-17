@@ -8,4 +8,9 @@ public class Beer extends Drink{
     public void effect(Snake snake){
         snake.shrinkAmount(5);
     }
+
+    @Override
+    public void eat() {
+
+    }
 }
