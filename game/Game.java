@@ -40,9 +40,9 @@ public class Game extends Thread {
 		this.gameName = "Test";//TODO
 		
 		s1=new Snake(new Point(0,0),15,(byte)1);
-		s2=new Snake(new Point(40,40),15,(byte)2);
-		s3=new Snake(new Point(80,80),15,(byte)3);
-		s4=new Snake(new Point(120,120),15,(byte)4);
+		s2=s1.clone(new Point(40,40),15,(byte)2);
+		s3=s1.clone(new Point(80,80),15,(byte)3);
+		s4=s1.clone(new Point(120,120),15,(byte)4);
 		
 		
 		snakes=new HashMap<Integer,Snake>();
