@@ -1,13 +1,13 @@
 package utilities.Factory;
 
+import interfaces.Eatable;
 import utilities.GameOptions;
 import utilities.Point;
 
 import java.nio.ByteBuffer;
 
-public abstract class Food {
+public abstract class Food implements Eatable {
     public Point a;
-    public int foodSize;
 
     public Point generate(){
         int x=(int) (Math.random()* GameOptions.gridSize);
@@ -21,5 +21,11 @@ public abstract class Food {
         b.put((byte)a.y);
         b.flip();
         return b;
+    }
+
+    @Override
+    public Point getPoint()
+    {
+        return this.a;
     }
 }

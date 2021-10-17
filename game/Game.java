@@ -1,5 +1,7 @@
 package game;
 
+import decorator.EatableDecorator;
+import interfaces.Eatable;
 import utilities.*;
 import utilities.Factory.*;
 
@@ -24,10 +26,10 @@ public class Game extends Thread {
 	public HashSet<Snake> snakesAtStart;
 	AbstractFactory foodFactory = FactoryCreator.getFactory("Food");
 	AbstractFactory drinkFactory = FactoryCreator.getFactory("Drink");
-	public Food food;
+	public Eatable food;
 	public int foodChange = 1;
 	public int foodTypes = 2;
-	public Drink drink;
+	public Eatable drink;
 	public int drinkChange = 1;
 	public int drinkTypes = 2;
 
@@ -94,8 +96,8 @@ public class Game extends Thread {
 	}
 	
 	public void resetFood(){
-		this.food =  FactoryCreator.getFactory("Food").getFood(this.foodChange % this.foodTypes);
-		this.drink =  FactoryCreator.getFactory("Drink").getDrink(this.drinkChange % this.drinkTypes);
+		this.food = new EatableDecorator(FactoryCreator.getFactory("Food").getFood(this.foodChange % this.foodTypes));
+		this.drink = new EatableDecorator(FactoryCreator.getFactory("Drink").getDrink(this.drinkChange % this.drinkTypes));
 	}
 
 	public void removeClient(Client c) {

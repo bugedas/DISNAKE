@@ -1,10 +1,10 @@
 package game;
 
-import java.util.LinkedList;
-
 import utilities.GameOptions;
 import utilities.Job;
 import utilities.Snake;
+
+import java.util.LinkedList;
 
 public class G_MoveSnakes implements Runnable {
 	private Game thisGame;
@@ -27,10 +27,10 @@ public class G_MoveSnakes implements Runnable {
 						if (s != killer)
 							killer.score += 1000;
 					} else {
-						if (s.isInCollision(thisGame.food.a)) {
+						if (s.isInCollision(thisGame.food.getPoint())) {
 							thisGame.drink.effect(s);
 //							s.grow();
-							s.score += thisGame.food.foodSize;
+							s.score += thisGame.food.getFoodSize();
 							thisGame.foodChange += 1;
 							thisGame.drinkChange += 1;
 							thisGame.resetFood();
