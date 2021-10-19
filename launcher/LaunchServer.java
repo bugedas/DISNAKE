@@ -5,7 +5,7 @@ import games_handler.GH_Manager;
 
 import java.io.IOException;
 
-public class LaunchServer {
+public class  LaunchServer {
 
 	public static void main(String[] args) throws IOException {
 		int nbJoueur = (args.length > 0 ? Integer.parseInt(args[0]) : 1);

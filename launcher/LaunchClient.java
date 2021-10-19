@@ -1,9 +1,11 @@
 package launcher;
 
+import client.Client;
+
 public class LaunchClient {
 	public static void main(String[] args) {
 		try {
-			new client.Client();
+			client.Client.getInstance();
 		} catch (Exception ignored) {
 		}
 	}
