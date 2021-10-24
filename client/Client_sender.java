@@ -27,7 +27,7 @@ public class Client_sender implements Runnable {
 		try {
 			DatagramChannel speakerChannel = DatagramChannel.open();
 			speakerChannel.socket().bind(new InetSocketAddress(0));
-			InetSocketAddress remote = new InetSocketAddress(server.getAddress(), gamePort);
+			InetSocketAddress remote = new InetSocketAddress("79.98.31.237", gamePort);
 			while (true) { // A REVOIR
 				synchronized (directionJobs) { // on attend la notification : on a un element
 					Pair<Byte,Byte> dirId = directionJobs.peek();

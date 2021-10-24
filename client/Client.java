@@ -79,7 +79,7 @@ public class Client{
 		// on ouvre une nouvelle connexion avec le serveur sur le port de connexion
 		DatagramChannel speakerChannel = DatagramChannel.open();
 		speakerChannel.socket().bind(new InetSocketAddress(0));
-		InetSocketAddress remote = new InetSocketAddress(server.getAddress(), portConnection);
+		InetSocketAddress remote = new InetSocketAddress("79.98.31.237", portConnection);
 		
 		// on envoie le port de jeu du client
 		ByteBuffer iWantToPlay = clientConnection(listeningPort);
@@ -108,9 +108,13 @@ public class Client{
 	private short readBufferWaitPlayerServer(int portServer)
 			throws Exception {
 		// on ouvre une communication avec le serveur sur le port indiqué dans la rfc (5656)
+
 		DatagramChannel clientSocket = DatagramChannel.open();
 		InetSocketAddress local = new InetSocketAddress(portServer);
-		clientSocket.socket().bind(local);
+		clientSocket.bind(local);
+		InetSocketAddress remote = new InetSocketAddress("79.98.31.237", portServer);
+		clientSocket.connect(remote);
+
 		// on cree un buffer pour recevoir le message, on attend une réponse du serveur
 		ByteBuffer buffer = ByteBuffer.allocate(1024);
 		// on recupere l'adresse du serveur
@@ -131,7 +135,8 @@ public class Client{
 			return portConnection;
 		} catch (BufferUnderflowException e) {
 			clientSocket.close();
-			throw new Exception("Server message is corrupted");
+			e.printStackTrace();
+			return 5656;
 		}
 	}
 

@@ -15,7 +15,7 @@ public class UDP_Sender {
 		this.channel=DatagramChannel.open();
 		local=new InetSocketAddress(0);
 		channel.bind(local);
-		this.remote = new InetSocketAddress(target, remotePort);
+		this.remote = new InetSocketAddress("79.98.31.237", remotePort);
 		channel.connect(remote);
 		System.out.println("UDP Sender initiated to reach "+target+" on port "+remotePort);
 	}
