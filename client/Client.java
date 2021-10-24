@@ -80,7 +80,7 @@ public class Client{
 		DatagramChannel speakerChannel = DatagramChannel.open();
 		speakerChannel.socket().bind(new InetSocketAddress(0));
 		InetSocketAddress remote = new InetSocketAddress("79.98.31.237", portConnection);
-		
+
 		// on envoie le port de jeu du client
 		ByteBuffer iWantToPlay = clientConnection(listeningPort);
 		while(notReceivedPortGame){
@@ -90,7 +90,8 @@ public class Client{
 			iWantToPlay.position(0);
 			try {
 				Thread.sleep(2000);
-			} catch (InterruptedException e) {
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 		// on ferme la communication
@@ -108,13 +109,9 @@ public class Client{
 	private short readBufferWaitPlayerServer(int portServer)
 			throws Exception {
 		// on ouvre une communication avec le serveur sur le port indiqué dans la rfc (5656)
-
 		DatagramChannel clientSocket = DatagramChannel.open();
 		InetSocketAddress local = new InetSocketAddress(portServer);
-		clientSocket.bind(local);
-		InetSocketAddress remote = new InetSocketAddress("79.98.31.237", portServer);
-		clientSocket.connect(remote);
-
+		clientSocket.socket().bind(local);
 		// on cree un buffer pour recevoir le message, on attend une réponse du serveur
 		ByteBuffer buffer = ByteBuffer.allocate(1024);
 		// on recupere l'adresse du serveur
