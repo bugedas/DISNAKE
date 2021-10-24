@@ -32,6 +32,8 @@ public class Game extends Thread {
 	public Eatable drink;
 	public int drinkChange = 1;
 	public int drinkTypes = 2;
+	public Eatable badFood;
+	public Eatable badDrink;
 
 	public G_Manager manager;
 	private long multicastTimeInterval = 50;// 50 ms
@@ -98,6 +100,8 @@ public class Game extends Thread {
 	public void resetFood(){
 		this.food = new EatableDecorator(FactoryCreator.getFactory("Food").getFood(this.foodChange % this.foodTypes));
 		this.drink = new EatableDecorator(FactoryCreator.getFactory("Drink").getDrink(this.drinkChange % this.drinkTypes));
+		this.badFood = new EatableDecorator(FactoryCreator.getFactory("Food").getFood(this.foodChange % this.foodTypes));
+		this.badDrink = new EatableDecorator(FactoryCreator.getFactory("Drink").getDrink(this.drinkChange % this.drinkTypes));
 	}
 
 	public void removeClient(Client c) {

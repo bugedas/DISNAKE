@@ -4,13 +4,13 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 // OK : calcule la nouvelle gate a afficher a partir des hashmaps de serpent
 class ManagementBackgate implements Runnable {
-	private ArrayBlockingQueue<Pair<HashMap<Byte, Snake>, Point>> gateJobs;
+	private ArrayBlockingQueue<Triplet<HashMap<Byte, Snake>, Point, Point>> gateJobs;
 	private DisplayManagement gameDisplay;
 	private byte myNumber;
 	private ManageRequestDirection administrator;
 	private final int size = utilities.GameOptions.gridSize;
 	
-	protected ManagementBackgate(ArrayBlockingQueue<Pair<HashMap<Byte, Snake>, Point>> jobs, DisplayManagement display, byte number, ManageRequestDirection gest){
+	protected ManagementBackgate(ArrayBlockingQueue<Triplet<HashMap<Byte, Snake>, Point, Point>> jobs, DisplayManagement display, byte number, ManageRequestDirection gest){
 		this.gateJobs = jobs;
 		this.gameDisplay = display;
 		this.myNumber = number;
@@ -21,10 +21,11 @@ class ManagementBackgate implements Runnable {
 	public void run() {
 		try {
 			while (true) {
-				Pair<HashMap<Byte, Snake>, Point> req = (Pair<HashMap<Byte, Snake>, Point>) gateJobs.take();
+				Triplet<HashMap<Byte, Snake>, Point, Point> req = (Triplet<HashMap<Byte, Snake>, Point, Point>) gateJobs.take();
 				// System.out.print("On a recu un packet de serpents... ");
 				byte[][] backgate = calculBackgate(req.a);
 				backgate[req.b.x][req.b.y] = DisplayManagement.FOOD;
+				backgate[req.c.x][req.c.y] = DisplayManagement.POISON;
 				gameDisplay.swap(backgate);
 			}
 		} catch (InterruptedException e) {
