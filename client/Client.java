@@ -21,19 +21,28 @@ public class Client{
 	private String serverName;
 	private ManageRequestDirection gest;
 	private DisplayManagement window = null;
-//	public static Client instance = new Client();
-	
+	public static Client instance;
+
+	static {
+		try {
+			instance = new Client();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	// on recupere sur le port 5656, le serveur et le port avec lequel on
 	// communique avec le serveur, on dit au serveur de nous parler sur 5959
-	public Client() throws Exception{
+	private Client() throws Exception{
 			launchingListener((short) 5959, readBufferWaitPlayerServer(5656));
 	}
 
-//	public static Client getInstance() {
-//		if(instance == null)
-//			instance = new Client();
-//		return instance;
-//	}
+	public static Client getInstance() throws Exception {
+		if(instance == null) {
+			instance = new Client();
+		}
+		return instance;
+	}
 	// On lance un client listener sur le port listeningPort et on envoie au serveur le port sur lequel on va ecouter
 	private void launchingListener(short listeningPort, short sendPort) throws Exception {
 		gateJobs = new ArrayBlockingQueue<Pair<HashMap<Byte, Snake>, Point>>(1);
