@@ -11,14 +11,14 @@ import java.util.concurrent.ArrayBlockingQueue;
 // TEST OK
 public class Client_listener implements Runnable {
 	// le serveur EMPTY la file avant de mettre un nouvel element
-	private ArrayBlockingQueue<Pair<HashMap<Byte, Snake>, Point>> gateJobs;
+	private ArrayBlockingQueue<Triplet<HashMap<Byte, Snake>, Point, Point>> gateJobs;
 	private DatagramChannel listenerChannel; // sur le portEcoute
 	private Client client;
 	private boolean pasLancerDir = true;
 
 	// le serveur EMPTY la file avant de mettre un nouvel element, ne marche
 	// parce qu'un seul thread remplit la file
-	protected Client_listener(ArrayBlockingQueue<Pair<HashMap<Byte, Snake>, Point>> jobs, short listeningPort,
+	protected Client_listener(ArrayBlockingQueue<Triplet<HashMap<Byte, Snake>, Point, Point>> jobs, short listeningPort,
 			Client c) {
 		gateJobs = jobs;
 		client = c;
@@ -89,7 +89,7 @@ public class Client_listener implements Runnable {
 	}
 
 	private void lireSerpents(ByteBuffer buffer) throws Exception {
-		Pair<HashMap<Byte, Snake>, Point> req = decodeBufferToGame(buffer);
+		Triplet<HashMap<Byte, Snake>, Point, Point> req = decodeBufferToGame(buffer);
 		// ici on enleve tous les elements de la file pour ne prendre en compte
 		// que le dernier, marche car un seul thread remplit la file
 		while (gateJobs.size() > 0)
@@ -98,7 +98,7 @@ public class Client_listener implements Runnable {
 	}
 
 	// fonction decode
-	private static Pair<HashMap<Byte, Snake>, Point> decodeBufferToGame(ByteBuffer buf) throws Exception {
+	private static Triplet<HashMap<Byte, Snake>, Point, Point> decodeBufferToGame(ByteBuffer buf) throws Exception {
 		HashMap<Byte, Snake> snakes = new HashMap<Byte, Snake>();
 		try {
 			byte nbSnakes = buf.get();
@@ -124,7 +124,8 @@ public class Client_listener implements Runnable {
 				snakes.put(numSnake, c);
 			}
 			Point FOOD = new Point(buf.get(), buf.get());
-			return new Pair<HashMap<Byte, Snake>, Point>(snakes, FOOD);
+			Point POISON = new Point(buf.get(), buf.get());
+			return new Triplet<HashMap<Byte, Snake>, Point, Point>(snakes, FOOD, POISON);
 		} catch (Exception e) {
 		}
 		throw new Exception("Le message du serveur est mal décodé");

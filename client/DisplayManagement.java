@@ -10,7 +10,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 // NORMALEMENT OK : interface graphique + gestion des demandes du clavier
 @SuppressWarnings("serial")
 public class DisplayManagement extends JComponent implements KeyListener {
-	protected static final byte EMPTY = 0, FULL = 1, FOOD = 2, PERSO = 3,
+	protected static final byte EMPTY = 0, FULL = 1, FOOD = 2, PERSO = 3, POISON = 4,
 			cellSize = 10;
 	private byte[][] gate; // la gate est calculee par un autre thread
 	private JFrame graph;
@@ -63,7 +63,7 @@ public class DisplayManagement extends JComponent implements KeyListener {
 
 		g.setColor((color == EMPTY) ? Color.WHITE
 				: (color == FULL) ? Color.BLACK : (color == FOOD) ? Color.RED
-				: (color == PERSO) ? Color.blue  : Color.gray);
+				: (color == PERSO) ? Color.blue  : (color == POISON) ? Color.green  : Color.gray);
 
 		g.fillRect(i * cellSize + cellSize / 16, j * cellSize + cellSize / 16,
 				cellSize - cellSize / 8, cellSize - cellSize / 8);
