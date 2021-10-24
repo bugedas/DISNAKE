@@ -12,7 +12,13 @@ public class Point {
 		this.x = x % GameOptions.gridSize;
 		this.y = y % GameOptions.gridSize;
 	}
+    public int getX() {
+        return x;
+    }
 
+    public int getY() {
+        return y;
+    }
 	@Override
 	public boolean equals(Object o) {
 		Point that = (Point) o;
