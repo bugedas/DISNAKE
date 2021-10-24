@@ -36,6 +36,15 @@ public class G_MoveSnakes implements Runnable {
 							thisGame.resetFood();
 							counter = 0;
 						}
+						if (s.isInCollision(thisGame.badFood.getPoint())) {
+							thisGame.badDrink.effect(s);
+//							s.grow();
+							s.score += thisGame.badFood.getFoodSize();
+							thisGame.foodChange += 1;
+							thisGame.drinkChange += 1;
+							thisGame.resetFood();
+							counter = 0;
+						}
 						else {
 							s.move();
 							s.score+=1;
