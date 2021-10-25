@@ -2,6 +2,7 @@ package game;
 
 import utilities.Client;
 import utilities.Job;
+import utilities.Snake;
 
 import java.util.HashMap;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -41,4 +42,14 @@ public class G_ManagerFacade {
                     + "\" to Runnable_Output for Client " + c.id);
         }
     }
+
+    public static synchronized void SendJobType(HashMap<Integer, Snake> snakes, Job j) {
+        System.out.println("Job type " + j.type()
+                + " + client id: " + j.id());
+        Snake s = snakes.get(j.id() & 255);
+        s.direction(j.direction());
+
+    }
+
+
 }

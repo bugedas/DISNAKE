@@ -3,7 +3,6 @@ package game;
 import utilities.Client;
 import utilities.Job;
 import utilities.Runnable_Input;
-import utilities.Snake;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -95,13 +94,9 @@ public class G_Manager implements Runnable {
 				else
 					System.out.println(j.jobId());
 				id = j.jobId();
-				synchronized (thisGame.snakes) {
-					System.out.println("Job type " + j.type()
-							+ " + client id: " + j.id());
-					Snake s = thisGame.snakes.get(j.id() & 255);
-					s.direction(j.direction());
 
-				}
+				G_ManagerFacade.SendJobType(thisGame.snakes, j);
+
 			}
 
 			gameOver=true;
