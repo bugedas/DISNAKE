@@ -1,13 +1,13 @@
 package game;
 
+import utilities.Client;
+import utilities.Job;
+import utilities.Runnable_Input;
+import utilities.Snake;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.concurrent.ArrayBlockingQueue;
-
-import utilities.Job;
-import utilities.Runnable_Input;
-import utilities.Client;
-import utilities.Snake;
 
 public class G_Manager implements Runnable {
 	public Game thisGame;

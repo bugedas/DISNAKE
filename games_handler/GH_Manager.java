@@ -33,7 +33,7 @@ public class GH_Manager implements Runnable{
 	public int broadcastTimeInterval = 0;
 
 	public void start() throws IOException {
-		nbPlayers = Math.max(1, Math.min(nbP, 4));
+		nbPlayers = 2;
 		System.out.println("GH_Manager has been initialized:");
 		
 		in_communicator=new ArrayBlockingQueue<Job>(100);
