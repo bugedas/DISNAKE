@@ -65,29 +65,14 @@ public class G_Manager implements Runnable {
 			}
 
 			sendTimer = true;
-			for (byte timer = 5; timer > 0; timer--) {
-				for (Client c : out_communicators.keySet()) {
-					Job j = new Job(Job.Type.SEND_TIMER);
-					j.timer(timer);
-					out_communicators.get(c).put(j);
-					System.out.println("G_Manager sent job \"" + j.type()
-							+ "\" to Runnable_Output for Client " + c.id);
-				}
-				Thread.sleep(950);// a bit less than a second
-			}
+			G_ManagerFacade.SendTimer(out_communicators);
+
 			sendTimer = false;
 
 			Thread.sleep(1000);
 			gameOver = false;
 
-			for (Client c : out_communicators.keySet()) {
-				Job j = new Job(Job.Type.SEND_POSITIONS);
-				j.id(c.id);
-				j.port(this.inputPort);
-				out_communicators.get(c).put(j);
-				System.out.println("G_Manager sent job \"" + j.type()
-						+ "\" to Runnable_Output for Client " + c.id);
-			}
+			G_ManagerFacade.SendPositions(out_communicators, inputPort);
 
 			Thread moveSnakes;
 			moveSnakes = new Thread(new G_MoveSnakes(thisGame));
@@ -123,14 +108,8 @@ public class G_Manager implements Runnable {
 			System.out.println(">>>>>>>>>>>>>> GameOver <<<<<<<<<<<<<<<");
 
 			sendScore = true;
-			for (Client c : out_communicators.keySet()) {
-				Job j = new Job(Job.Type.SEND_SCORES);
-				j.id(c.id);
-				j.snakes = thisGame.snakesAtStart;
-				out_communicators.get(c).put(j);
-				System.out.println("G_Manager sent job \"" + j.type()
-						+ "\" to Runnable_Output for Client " + c.id);
-			}
+			G_ManagerFacade.SendScores(out_communicators, thisGame);
+
 			Thread.sleep(2000);
 			sendScore = false;
 
