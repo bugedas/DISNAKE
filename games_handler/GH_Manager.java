@@ -5,6 +5,7 @@ import utilities.Job;
 import utilities.Runnable_Input;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.concurrent.ArrayBlockingQueue;
 
 //import java.util.HashSet;
@@ -31,6 +32,7 @@ public class GH_Manager implements Runnable{
 	public int nbP = 0;
 	public String serverName = "test server";
 	public int broadcastTimeInterval = 0;
+//	private HashSet<Byte> jobAlreadyDone = new HashSet<Byte>();
 
 	public void start() throws IOException {
 		nbPlayers = Math.max(1, Math.min(nbP, 4));
@@ -61,8 +63,8 @@ public class GH_Manager implements Runnable{
 				System.out.println(">>>>>>>>>>>>>>>>>>>>> Received a message");
 				switch(j.type()){
 				case WANT_TO_PLAY:
-					//if(jobAlreadyDone.contains(j.jobId())) break;//if we already did the job, let's do nothing 
-					//jobAlreadyDone.add(j.jobId());
+//					if(jobAlreadyDone.contains(j.jobId())) break;//if we already did the job, let's do nothing
+//					jobAlreadyDone.add(j.jobId());
 					System.out.println("A player want to play");
 					Game g= Game.getGameForANewPlayer();
 					if(g==null && nextPortToUseForGame<32000){
