@@ -99,19 +99,23 @@ public class Snake implements Cloneable{
 		points.removeFirst();
 		int x = head.x;
 		int y = head.y;
-
+		MoveContext move = new MoveContext();
 		switch (this.direction) {
 		case North:
-			y--;
+			move.setStrategy(new moveNorth());
+			y = move.executeMove(y);
 			break;
 		case South:
-			y++;
+			move.setStrategy(new moveSouth());
+			y = move.executeMove(y);
 			break;
 		case East:
-			x++;
+			move.setStrategy(new moveEast());
+			x = move.executeMove(x);
 			break;
 		case West:
-			x--;
+			move.setStrategy(new moveWest());
+			x = move.executeMove(x);
 			break;
 		default:
 			break;
@@ -120,6 +124,53 @@ public class Snake implements Cloneable{
 		points.addLast(newHead);
 		head = newHead;
 	}
+
+	public interface StrategyMove{
+		int move(int direction);
+	}
+
+	public static class moveNorth implements StrategyMove
+	{
+		@Override
+		public int move(int direction) {
+			return --direction;
+		}
+	}
+	public static class moveSouth implements StrategyMove
+	{
+		@Override
+		public int move(int direction) {
+			return ++direction;
+		}
+	}
+	public static class moveEast implements StrategyMove
+	{
+		@Override
+		public int move(int direction) {
+			return ++direction;
+		}
+	}
+	public static class moveWest implements StrategyMove
+	{
+		@Override
+		public int move(int direction) {
+			return --direction;
+		}
+	}
+
+	public class MoveContext
+	{
+		private StrategyMove strategy;
+
+		public void setStrategy(StrategyMove strategy){
+			this.strategy = strategy;
+		}
+
+		public int executeMove(int direction){
+			return strategy.move(direction);
+		}
+	}
+
 
 	synchronized public void grow() {
 		points.addFirst(null);// will be immediately removed
