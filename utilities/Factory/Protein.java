@@ -1,12 +1,16 @@
 package utilities.Factory;
 
 import utilities.Snake;
+import utilities.Command.*;
 
 public class Protein extends Drink{
     public int power;
 
     public void effect(Snake snake){
-        snake.growAmount(5);
+        SnakeController snakeCtrl = new SnakeController();
+        ICommand growCmd = new Grow(snake);
+        snakeCtrl.execute(growCmd);
+
     }
 
     @Override
