@@ -24,8 +24,8 @@ class ManagementBackgate implements Runnable {
 				Triplet<HashMap<Byte, Snake>, Point, Point> req = (Triplet<HashMap<Byte, Snake>, Point, Point>) gateJobs.take();
 				// System.out.print("On a recu un packet de serpents... ");
 				byte[][] backgate = calculBackgate(req.a);
-				backgate[req.b.x][req.b.y] = DisplayManagement.FOOD;
-				backgate[req.c.x][req.c.y] = DisplayManagement.DRINK;
+				backgate[req.b.x][req.b.y] = DisplayManagement.APPLE;
+				backgate[req.c.x][req.c.y] = DisplayManagement.POISON;
 				gameDisplay.swap(backgate);
 			}
 		} catch (InterruptedException e) {
