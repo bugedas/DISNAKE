@@ -25,7 +25,7 @@ class ManagementBackgate implements Runnable {
 				// System.out.print("On a recu un packet de serpents... ");
 				byte[][] backgate = calculBackgate(req.a);
 				backgate[req.b.x][req.b.y] = DisplayManagement.FOOD;
-				backgate[req.c.x][req.c.y] = DisplayManagement.POISON;
+				backgate[req.c.x][req.c.y] = DisplayManagement.DRINK;
 				gameDisplay.swap(backgate);
 			}
 		} catch (InterruptedException e) {
