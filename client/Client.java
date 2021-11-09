@@ -43,14 +43,14 @@ public class Client{
 		}
 		return instance;
 	}
-	// On lance un client listener sur le port listeningPort et on envoie au serveur le port sur lequel on va ecouter
+
 	private void launchingListener(short listeningPort, short sendPort) throws Exception {
 		gateJobs = new ArrayBlockingQueue<Triplet<HashMap<Byte, Snake>, Point, Point>>(1);
 		new Thread(new Client_listener(gateJobs, listeningPort, this)).start();
 		envoieServer(listeningPort, sendPort, server);
 	}
 	
-	// appelé par le Client_listener
+
 	void lancerAffichage(byte number) {
 		directionIdJobs = new LinkedBlockingDeque<Pair<Byte,Byte>>(5);
 		ArrayBlockingQueue<Byte> directionJobs = new ArrayBlockingQueue<Byte>(5);
@@ -59,7 +59,7 @@ public class Client{
 		new Thread(new ManagementBackgate(gateJobs, window, number, gest)).start();
 	}
 
-	// appelé par le Client_listener, on lance un speaker sur le port gamePort
+
 	void lancerSpeaker(byte number, short gamePort) {
 		new Thread(new Client_sender(server, directionIdJobs, gamePort, number)).start();
 	}
@@ -76,24 +76,24 @@ public class Client{
 
 	private void envoieServer(short listeningPort, short portConnection,
 			InetSocketAddress server) throws Exception {
-		// on ouvre une nouvelle connexion avec le serveur sur le port de connexion
+
 		DatagramChannel speakerChannel = DatagramChannel.open();
 		speakerChannel.socket().bind(new InetSocketAddress(0));
 		InetSocketAddress remote = new InetSocketAddress(server.getAddress(), portConnection);
 		
-		// on envoie le port de jeu du client
+
 		ByteBuffer iWantToPlay = clientConnection(listeningPort);
 		while(notReceivedPortGame){
-			// On envoie un message je veux jouer sur le port portConnection
+
 			speakerChannel.send(iWantToPlay, remote);
-			// permet de reenvoyer le buffer
+
 			iWantToPlay.position(0);
 			try {
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {
 			}
 		}
-		// on ferme la communication
+
 		speakerChannel.close();
 	}
 
@@ -107,26 +107,25 @@ public class Client{
 
 	private short readBufferWaitPlayerServer(int portServer)
 			throws Exception {
-		// on ouvre une communication avec le serveur sur le port indiqué dans la rfc (5656)
+
 		DatagramChannel clientSocket = DatagramChannel.open();
 		InetSocketAddress local = new InetSocketAddress(portServer);
 		clientSocket.socket().bind(local);
-		// on cree un buffer pour recevoir le message, on attend une réponse du serveur
+
 		ByteBuffer buffer = ByteBuffer.allocate(1024);
-		// on recupere l'adresse du serveur
+
 		server = (InetSocketAddress) clientSocket
 				.receive(buffer);
 		buffer.flip();
 		try {
-			// on a déjà le nom du serveur codé comme pour DNS
+
 			byte nbChar = buffer.get();
 			serverName = "";
 			for (int i = 0; i < nbChar; i++)
 				serverName += (char) buffer.get();
-			// on récupère le port de connexion
+
 			short portConnection = buffer.getShort();
-			// On joue sur serverName nom qui contient nbChar caracteres. On se connecte sur portConnection
-			// on ferme la connexion avec le serveur sur le port 5656
+
 			clientSocket.close();
 			return portConnection;
 		} catch (BufferUnderflowException e) {
