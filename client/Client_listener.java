@@ -1,9 +1,15 @@
 package client;
 
+import Observer.Editor;
+import Observer.LogListener;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -77,7 +83,7 @@ public class Client_listener implements Runnable {
 		}
 	}
 
-	private String lireBufferFinal(ByteBuffer buffer) {
+	private String lireBufferFinal(ByteBuffer buffer) throws IOException {
 		String s = "<HTML><h2>The game is over. Scores :</h2>";
 		byte nbSnakes = buffer.get();
 		for (int i = 0; i < nbSnakes; i++) {
@@ -85,8 +91,21 @@ public class Client_listener implements Runnable {
 			short score = buffer.getShort();
 			s += "<h3>Snake " + num + " has " + score + " points</h3>";
 		}
-		return s+"</HTML>";
+		Editor editor = new Editor();
+		editor.events.subscribe("update", new LogListener("Scores.txt"));
+
+		try {
+			editor.openFile("Observer/Scores.txt");
+			editor.updateFile(s);
+			editor.saveFile();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		String scores = Files.readString(Path.of("./Observer/Scores.txt"), StandardCharsets.US_ASCII);
+		return scores+"</HTML>";
 	}
+
 
 	private void lireSerpents(ByteBuffer buffer) throws Exception {
 		Triplet<HashMap<Byte, Snake>, Point, Point> req = decodeBufferToGame(buffer);
