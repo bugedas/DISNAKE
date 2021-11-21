@@ -1,6 +1,7 @@
 package utilities;
 
 import java.nio.ByteBuffer;
+import java.util.HashMap;
 import java.util.HashSet;
 
 public class BufferHandler {
@@ -16,6 +17,16 @@ public class BufferHandler {
 		buffer.put((byte)3);
 		buffer.put((byte)snakes.size());
 		for(Snake s:snakes){
+			buffer.put(s.id);
+			buffer.putShort((short)s.score);
+		}
+		return buffer;
+	}
+
+	public static ByteBuffer sendScoresToCurrentBuff(HashMap<Integer, Snake> snakes, ByteBuffer  buffer){
+//		ByteBuffer buffer=ByteBuffer.allocate(1+1+3*snakes.size());
+		buffer.put((byte)Constants.playerNr);
+		for(Snake s:snakes.values()){
 			buffer.put(s.id);
 			buffer.putShort((short)s.score);
 		}

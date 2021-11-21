@@ -7,6 +7,7 @@ import utilities.Runnable_Input;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.concurrent.ArrayBlockingQueue;
+import utilities.Constants;
 
 //import java.util.HashSet;
 //import java.util.LinkedList;
@@ -25,17 +26,16 @@ public class GH_Manager implements Runnable{
 	// messages are transformed into Jobs and sent to this class through in_communicator
 	private Thread input;
 	private ArrayBlockingQueue<Job> in_communicator;
-	//private HashSet<Byte> jobAlreadyDone;
+	private HashSet<Byte> jobAlreadyDone = new HashSet<Byte>();
 	private int nextPortToUseForGame, nbPlayers;
 	public int inputPort = 0;
 	public int outputPort = 0;
 	public int nbP = 0;
 	public String serverName = "test server";
 	public int broadcastTimeInterval = 0;
-//	private HashSet<Byte> jobAlreadyDone = new HashSet<Byte>();
 
 	public void start() throws IOException {
-		nbPlayers = 2;
+		nbPlayers = Constants.playerNr;
 		System.out.println("GH_Manager has been initialized:");
 		
 		in_communicator=new ArrayBlockingQueue<Job>(100);
@@ -63,8 +63,8 @@ public class GH_Manager implements Runnable{
 				System.out.println(">>>>>>>>>>>>>>>>>>>>> Received a message");
 				switch(j.type()){
 				case WANT_TO_PLAY:
-//					if(jobAlreadyDone.contains(j.jobId())) break;//if we already did the job, let's do nothing
-//					jobAlreadyDone.add(j.jobId());
+					if(jobAlreadyDone.contains(j.jobId())) break;//if we already did the job, let's do nothing
+					jobAlreadyDone.add(j.jobId());
 					System.out.println("A player want to play");
 					Game g= Game.getGameForANewPlayer();
 					if(g==null && nextPortToUseForGame<32000){
