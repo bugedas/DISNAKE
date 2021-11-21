@@ -4,6 +4,7 @@ import game.G_Manager;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.HashSet;
 import java.util.concurrent.ArrayBlockingQueue;
 
 public class Runnable_Output extends UDP_Sender implements Runnable {
@@ -55,6 +56,8 @@ public class Runnable_Output extends UDP_Sender implements Runnable {
 									.encodeAllSnakes(this.manager.thisGame.snakes);
 							buffer.put(this.manager.thisGame.food.toBuffer());
 							buffer.put(this.manager.thisGame.badFood.toBuffer());
+
+//							buffer = BufferHandler.sendScoresToCurrentBuff(this.manager.thisGame.snakes, buffer);
 
 							buffer.flip();
 							this.send(buffer);
