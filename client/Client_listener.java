@@ -66,12 +66,8 @@ public class Client_listener implements Runnable {
 						pasLancerDir = false;
 						client.print("");
 					}
-//					buffer.compact();
-//					buffer.position(1);
 					client.print(printScores(buffer));
-//					buffer.compact();
 					lireSerpents(buffer);
-//					client.print(printScores(buffer));
 					break;
 				case 3:
 					if (!gameOver) {
