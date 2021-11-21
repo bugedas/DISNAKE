@@ -1,12 +1,17 @@
 package client;
 
+import utilities.Bridge.Green;
+import utilities.Bridge.ObjectColor;
+import utilities.Bridge.Red;
+import utilities.Factory.ObjectColorFlyweightFactory;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.ArrayBlockingQueue;
-import utilities.Bridge.*;
+
 // NORMALEMENT OK : interface graphique + gestion des demandes du clavier
 @SuppressWarnings("serial")
 public class DisplayManagement extends JComponent implements KeyListener {
@@ -60,8 +65,8 @@ public class DisplayManagement extends JComponent implements KeyListener {
 	}
 
 	private void fill(Graphics g, int i, int j, byte color) {
-        ObjectColor colorRed = new Red();
-        ObjectColor colorGreen = new Green();
+        ObjectColor colorRed = ObjectColorFlyweightFactory.getObjectColor("poison", new Red());
+        ObjectColor colorGreen =ObjectColorFlyweightFactory.getObjectColor("food", new Green());
 		g.setColor((color == EMPTY) ? Color.WHITE
 				: (color == FULL) ? Color.BLACK : (color == APPLE) ? colorRed.colorize()
 				: (color == PERSO) ? Color.blue  : (color == POISON) ? colorGreen.colorize()  : Color.gray);
