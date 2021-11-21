@@ -66,6 +66,7 @@ public class Client_listener implements Runnable {
 						pasLancerDir = false;
 						client.print("");
 					}
+					client.print(printScores(buffer));
 					lireSerpents(buffer);
 					break;
 				case 3:
@@ -104,6 +105,18 @@ public class Client_listener implements Runnable {
 
 		String scores = Files.readString(Path.of("./Observer/Scores.txt"), StandardCharsets.US_ASCII);
 		return scores+"</HTML>";
+	}
+
+	private String printScores(ByteBuffer buffer) throws IOException {
+		String s = "<HTML><h2>Scores :</h2>";
+		byte nbSnakes = buffer.get();
+		for (int i = 0; i < nbSnakes; i++) {
+			byte num = buffer.get();
+			short score = buffer.getShort();
+			s += "<h3>Snake " + num + " has " + score + " points</h3>";
+		}
+
+		return s+"</HTML>";
 	}
 
 

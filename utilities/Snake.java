@@ -2,6 +2,7 @@ package utilities;
 
 import java.nio.ByteBuffer;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 
 public class Snake implements Cloneable{
@@ -369,9 +370,10 @@ public class Snake implements Cloneable{
 			tmp.add(encodeOneSnake(s));
 			size += tmp.getLast().capacity();
 		}
-		ByteBuffer buf = ByteBuffer.allocate(size + 2+2+2);//+2 for the food;
+		ByteBuffer buf = ByteBuffer.allocate(size + 2+2+2 +1+3*Constants.playerNr);//+2 for the food; 1,1,3*x - for scores
 		byte nb = (byte) S.size();
 		buf.put((byte) 2);// TYPE
+		buf = BufferHandler.sendScoresToCurrentBuff(S, buf);
 		buf.put(nb);// NB SNAKES
 
 		for (ByteBuffer b : tmp) {

@@ -1,1 +1,1 @@
-<HTML><h2>The game is over. Scores :</h2><h3>Snake 1 has 145 points</h3><h3>Snake 2 has 146 points</h3>
+<HTML><h2>The game is over. Scores :</h2><h3>Snake 1 has 0 points</h3>

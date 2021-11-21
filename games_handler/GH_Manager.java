@@ -7,6 +7,7 @@ import utilities.Runnable_Input;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.concurrent.ArrayBlockingQueue;
+import utilities.Constants;
 
 //import java.util.HashSet;
 //import java.util.LinkedList;
@@ -25,17 +26,16 @@ public class GH_Manager implements Runnable{
 	// messages are transformed into Jobs and sent to this class through in_communicator
 	private Thread input;
 	private ArrayBlockingQueue<Job> in_communicator;
-	//private HashSet<Byte> jobAlreadyDone;
+//	private HashSet<Byte> jobAlreadyDone = new HashSet<Byte>();
 	private int nextPortToUseForGame, nbPlayers;
 	public int inputPort = 0;
 	public int outputPort = 0;
 	public int nbP = 0;
 	public String serverName = "test server";
 	public int broadcastTimeInterval = 0;
-//	private HashSet<Byte> jobAlreadyDone = new HashSet<Byte>();
 
 	public void start() throws IOException {
-		nbPlayers = 2;
+		nbPlayers = Constants.playerNr;
 		System.out.println("GH_Manager has been initialized:");
 		
 		in_communicator=new ArrayBlockingQueue<Job>(100);
@@ -46,7 +46,6 @@ public class GH_Manager implements Runnable{
 		System.out.println("\t> output Thread initialized on port "+outputPort+" (for broadcast)");
 		
 		System.out.println("\t> END");
-		//jobAlreadyDone=new HashSet<Byte>();
 		nextPortToUseForGame=30000;
 	}
 
