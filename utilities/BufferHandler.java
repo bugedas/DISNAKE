@@ -24,7 +24,6 @@ public class BufferHandler {
 	}
 
 	public static ByteBuffer sendScoresToCurrentBuff(HashMap<Integer, Snake> snakes, ByteBuffer  buffer){
-//		ByteBuffer buffer=ByteBuffer.allocate(1+1+3*snakes.size());
 		buffer.put((byte)Constants.playerNr);
 		for(Snake s:snakes.values()){
 			buffer.put(s.id);

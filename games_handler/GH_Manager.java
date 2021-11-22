@@ -26,7 +26,7 @@ public class GH_Manager implements Runnable{
 	// messages are transformed into Jobs and sent to this class through in_communicator
 	private Thread input;
 	private ArrayBlockingQueue<Job> in_communicator;
-	private HashSet<Byte> jobAlreadyDone = new HashSet<Byte>();
+//	private HashSet<Byte> jobAlreadyDone = new HashSet<Byte>();
 	private int nextPortToUseForGame, nbPlayers;
 	public int inputPort = 0;
 	public int outputPort = 0;
@@ -46,7 +46,6 @@ public class GH_Manager implements Runnable{
 		System.out.println("\t> output Thread initialized on port "+outputPort+" (for broadcast)");
 		
 		System.out.println("\t> END");
-		//jobAlreadyDone=new HashSet<Byte>();
 		nextPortToUseForGame=30000;
 	}
 
@@ -63,8 +62,8 @@ public class GH_Manager implements Runnable{
 				System.out.println(">>>>>>>>>>>>>>>>>>>>> Received a message");
 				switch(j.type()){
 				case WANT_TO_PLAY:
-					if(jobAlreadyDone.contains(j.jobId())) break;//if we already did the job, let's do nothing
-					jobAlreadyDone.add(j.jobId());
+//					if(jobAlreadyDone.contains(j.jobId())) break;//if we already did the job, let's do nothing
+//					jobAlreadyDone.add(j.jobId());
 					System.out.println("A player want to play");
 					Game g= Game.getGameForANewPlayer();
 					if(g==null && nextPortToUseForGame<32000){
