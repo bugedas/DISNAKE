@@ -4,6 +4,7 @@ import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -13,7 +14,7 @@ public class Client{
 	// server est initialisé dans le readBufferWaitPlayerServer et utile dans lancerSpeaker
 	private InetSocketAddress server;
 	// créée dans launchingListener et utile pour lancerAffichage, gateJobs contient les serpents envoye par le serveur, la liste est partagée entre le client listener aui la remplit et le administrator de la gate qui la EMPTY
-	private ArrayBlockingQueue<Triplet<HashMap<Byte, Snake>, Point, Point>> gateJobs;
+	private ArrayBlockingQueue<Triplet<HashMap<Byte, Snake>, Point, Point, List <Point>>> gateJobs;
 	// créée dans lancerAffichage et utile pour lancerSpeaker, directionIdJobs est remplie par le administrator de direction et vidée par le sender
 	private BlockingDeque<Pair<Byte,Byte>> directionIdJobs;
 	// pour envoyer le message je veux joueur tant qu'on ne recoit pas de message du serveur
@@ -45,7 +46,7 @@ public class Client{
 	}
 
 	private void launchingListener(short listeningPort, short sendPort) throws Exception {
-		gateJobs = new ArrayBlockingQueue<Triplet<HashMap<Byte, Snake>, Point, Point>>(1);
+		gateJobs = new ArrayBlockingQueue<Triplet<HashMap<Byte, Snake>, Point, Point, List<Point>>>(1);
 		new Thread(new Client_listener(gateJobs, listeningPort, this)).start();
 		envoieServer(listeningPort, sendPort, server);
 	}
@@ -145,13 +146,15 @@ class Pair<E,V>{
 	}
 }
 
-class Triplet<E,V,D>{
+class Triplet<E,V,D,G>{
 	E a;
 	V b;
 	D c;
-	Triplet(E a1, V b1, D c1){
+	G d;
+	Triplet(E a1, V b1, D c1, G d1){
 		a = a1;
 		b = b1;
 		c = c1;
+		d = d1;
 	}
 }

@@ -53,9 +53,11 @@ public class Runnable_Output extends UDP_Sender implements Runnable {
 					while (!manager.gameOver) {
 						synchronized (this.manager.thisGame.snakes) {
 							buffer = Snake
-									.encodeAllSnakes(this.manager.thisGame.snakes);
+									.encodeAllSnakes(this.manager.thisGame.snakes, this.manager.thisGame.obstacle.getWall());
 							buffer.put(this.manager.thisGame.food.toBuffer());
 							buffer.put(this.manager.thisGame.badFood.toBuffer());
+
+							buffer.put(this.manager.thisGame.obstacle.toBuffer());
 
 							buffer.flip();
 							this.send(buffer);

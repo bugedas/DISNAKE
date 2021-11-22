@@ -1,15 +1,19 @@
 package game;
 
+import interfaces.ObstacleInterface;
 import utilities.Point;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Obstacle {
-    private List<Point> body;
+public class Obstacle implements ObstacleInterface {
+    public List<Point> body = new ArrayList<>();
+
     public Obstacle(){
-        body = new ArrayList<>();
+        generateWall();
     }
+
     public void addObstacle(Point start, Point end) {
         int startX = start.getX();
         int endX = end.getX();
@@ -33,5 +37,29 @@ public class Obstacle {
             x += stepX;
             y += stepY;
         }
+    }
+
+    public ByteBuffer toBuffer(){
+        ByteBuffer b = ByteBuffer.allocate((body.size()*2) + 1);
+
+        b.put((byte)body.size());
+        for (Point bo : body){
+            b.put((byte)bo.x);
+            b.put((byte)bo.y);
+        }
+
+        b.flip();
+        return b;
+    }
+
+    public List<Point> generateWall(){
+        Point start = new Point((int) ((Math.random() * (55 - 15)) + 15), (int) ((Math.random() * (55 - 15)) + 15));
+        Point end = new Point((int) ((Math.random() * (55 - 15)) + 15), (int) ((Math.random() * (55 - 15)) + 15));
+        addObstacle(start, end);
+        return this.body;
+    }
+
+    public List<Point> getWall(){
+        return this.body;
     }
 }
