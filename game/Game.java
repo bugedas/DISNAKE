@@ -2,6 +2,7 @@ package game;
 
 import decorator.EatableDecorator;
 import interfaces.Eatable;
+import interfaces.ObstacleInterface;
 import utilities.*;
 import utilities.Factory.*;
 
@@ -34,7 +35,7 @@ public class Game extends Thread {
 	public int drinkTypes = 2;
 	public Eatable badFood;
 	public Eatable badDrink;
-    public Obstacle obstacle;
+    public ObstacleInterface obstacle = new ObstacleProxy();
 	public G_Manager manager;
 	private long multicastTimeInterval = 50;// 50 ms
 	
@@ -69,11 +70,7 @@ public class Game extends Thread {
 	public int maxPlayers() {
 		return maxPlayers;
 	}
-    public void addObstacle()
-    {
-        Obstacle obstacle = new Obstacle();
-        obstacle.addObstacle(new Point(10,10), new Point(10,12));
-    }
+
 	public void addClient(String address, int port) throws IOException, InterruptedException {
 		if (this.hasRoom() && waitForClients){
 			Snake s=remainingSnakes.removeFirst();
@@ -102,10 +99,10 @@ public class Game extends Thread {
 	}
 	
 	public void resetFood(){
-		this.food = new EatableDecorator(FactoryCreator.getFactory("Food").getFood(this.foodChange % this.foodTypes));
-		this.drink = new EatableDecorator(FactoryCreator.getFactory("Drink").getDrink(this.drinkChange % this.drinkTypes));
-		this.badFood = new EatableDecorator(FactoryCreator.getFactory("Food").getFood(this.foodChange % this.foodTypes));
-		this.badDrink = new EatableDecorator(FactoryCreator.getFactory("Drink").getDrink(this.drinkChange % this.drinkTypes));
+		this.food = new EatableDecorator(foodFactory.getFood(this.foodChange % this.foodTypes));
+		this.drink = new EatableDecorator(drinkFactory.getDrink(this.drinkChange % this.drinkTypes));
+		this.badFood = new EatableDecorator(foodFactory.getFood(this.foodChange % this.foodTypes));
+		this.badDrink = new EatableDecorator(drinkFactory.getDrink(this.drinkChange % this.drinkTypes));
 	}
 
 	public void removeClient(Client c) {

@@ -1,16 +1,17 @@
 package client;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 
 // OK : calcule la nouvelle gate a afficher a partir des hashmaps de serpent
 class ManagementBackgate implements Runnable {
-	private ArrayBlockingQueue<Triplet<HashMap<Byte, Snake>, Point, Point>> gateJobs;
+	private ArrayBlockingQueue<Triplet<HashMap<Byte, Snake>, Point, Point, List <Point>>> gateJobs;
 	private DisplayManagement gameDisplay;
 	private byte myNumber;
 	private ManageRequestDirection administrator;
 	private final int size = utilities.GameOptions.gridSize;
 	
-	protected ManagementBackgate(ArrayBlockingQueue<Triplet<HashMap<Byte, Snake>, Point, Point>> jobs, DisplayManagement display, byte number, ManageRequestDirection gest){
+	protected ManagementBackgate(ArrayBlockingQueue<Triplet<HashMap<Byte, Snake>, Point, Point, List<Point>>> jobs, DisplayManagement display, byte number, ManageRequestDirection gest){
 		this.gateJobs = jobs;
 		this.gameDisplay = display;
 		this.myNumber = number;
@@ -21,11 +22,15 @@ class ManagementBackgate implements Runnable {
 	public void run() {
 		try {
 			while (true) {
-				Triplet<HashMap<Byte, Snake>, Point, Point> req = (Triplet<HashMap<Byte, Snake>, Point, Point>) gateJobs.take();
+				Triplet<HashMap<Byte, Snake>, Point, Point, List <Point>> req = (Triplet<HashMap<Byte, Snake>, Point, Point, List <Point>>) gateJobs.take();
 				// System.out.print("On a recu un packet de serpents... ");
 				byte[][] backgate = calculBackgate(req.a);
 				backgate[req.b.x][req.b.y] = DisplayManagement.APPLE;
 				backgate[req.c.x][req.c.y] = DisplayManagement.POISON;
+				for(Point p : req.d){
+					backgate[p.x][p.y] = DisplayManagement.WALL;
+				}
+
 				gameDisplay.swap(backgate);
 			}
 		} catch (InterruptedException e) {

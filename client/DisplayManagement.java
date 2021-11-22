@@ -10,7 +10,7 @@ import utilities.Bridge.*;
 // NORMALEMENT OK : interface graphique + gestion des demandes du clavier
 @SuppressWarnings("serial")
 public class DisplayManagement extends JComponent implements KeyListener {
-	protected static final byte EMPTY = 0, FULL = 1, APPLE = 2, PERSO = 3, POISON = 4,
+	protected static final byte EMPTY = 0, FULL = 1, APPLE = 2, PERSO = 3, POISON = 4, WALL = 5,
 			cellSize = 10;
 	private byte[][] gate; // la gate est calculee par un autre thread
 	private JFrame graph;
@@ -64,7 +64,8 @@ public class DisplayManagement extends JComponent implements KeyListener {
         ObjectColor colorGreen = new Green();
 		g.setColor((color == EMPTY) ? Color.WHITE
 				: (color == FULL) ? Color.BLACK : (color == APPLE) ? colorRed.colorize()
-				: (color == PERSO) ? Color.blue  : (color == POISON) ? colorGreen.colorize()  : Color.gray);
+				: (color == PERSO) ? Color.blue  : (color == POISON) ? colorGreen.colorize()
+				: color == WALL ? Color.CYAN : Color.gray);
 
 		g.fillRect(i * cellSize + cellSize / 16, j * cellSize + cellSize / 16,
 				cellSize - cellSize / 8, cellSize - cellSize / 8);
