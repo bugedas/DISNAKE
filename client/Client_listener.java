@@ -10,22 +10,24 @@ import java.nio.channels.DatagramChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 
 // TEST OK
 public class Client_listener implements Runnable {
 	// le serveur EMPTY la file avant de mettre un nouvel element
-	private ArrayBlockingQueue<Triplet<HashMap<Byte, Snake>, Point, Point>> gateJobs;
+	private ArrayBlockingQueue<Triplet<HashMap<Byte, Snake>, Point, Point, List <Point>>> gateJobs;
 	private DatagramChannel listenerChannel; // sur le portEcoute
 	private Client client;
 	private boolean pasLancerDir = true;
 
 	// le serveur EMPTY la file avant de mettre un nouvel element, ne marche
 	// parce qu'un seul thread remplit la file
-	protected Client_listener(ArrayBlockingQueue<Triplet<HashMap<Byte, Snake>, Point, Point>> jobs, short listeningPort,
-			Client c) {
+	protected Client_listener(ArrayBlockingQueue<Triplet<HashMap<Byte, Snake>, Point, Point, List <Point>>> jobs, short listeningPort,
+							  Client c) {
 		gateJobs = jobs;
 		client = c;
 		try {
@@ -121,7 +123,7 @@ public class Client_listener implements Runnable {
 
 
 	private void lireSerpents(ByteBuffer buffer) throws Exception {
-		Triplet<HashMap<Byte, Snake>, Point, Point> req = decodeBufferToGame(buffer);
+		Triplet<HashMap<Byte, Snake>, Point, Point, List <Point>> req = decodeBufferToGame(buffer);
 		// ici on enleve tous les elements de la file pour ne prendre en compte
 		// que le dernier, marche car un seul thread remplit la file
 		while (gateJobs.size() > 0)
@@ -130,7 +132,7 @@ public class Client_listener implements Runnable {
 	}
 
 	// fonction decode
-	private static Triplet<HashMap<Byte, Snake>, Point, Point> decodeBufferToGame(ByteBuffer buf) throws Exception {
+	private static Triplet<HashMap<Byte, Snake>, Point, Point, List <Point>> decodeBufferToGame(ByteBuffer buf) throws Exception {
 		HashMap<Byte, Snake> snakes = new HashMap<Byte, Snake>();
 		try {
 			byte nbSnakes = buf.get();
@@ -157,7 +159,15 @@ public class Client_listener implements Runnable {
 			}
 			Point FOOD = new Point(buf.get(), buf.get());
 			Point POISON = new Point(buf.get(), buf.get());
-			return new Triplet<HashMap<Byte, Snake>, Point, Point>(snakes, FOOD, POISON);
+
+			List<Point> wall = new ArrayList<>();
+			int wallCount = buf.get();
+
+			for(int i = 0; i < wallCount; i++){
+				wall.add(new Point(buf.get(), buf.get()));
+			}
+
+			return new Triplet<HashMap<Byte, Snake>, Point, Point, List <Point>>(snakes, FOOD, POISON, wall);
 		} catch (Exception e) {
 		}
 		throw new Exception("Le message du serveur est mal décodé");

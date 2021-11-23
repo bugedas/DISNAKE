@@ -4,6 +4,7 @@ import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 
 public class Snake implements Cloneable{
 
@@ -198,6 +199,14 @@ public class Snake implements Cloneable{
 		return false;
 	}
 
+	synchronized public boolean isInCollisionWithWall(List<Point> wall) {
+		for(Point w : wall){
+			if (w.equals(head) && w!=head)
+				return true;
+		}
+		return false;
+	}
+
 	synchronized public boolean isInCollision(Snake a) {
 		for (Point b : a.points)
 			if (isInCollision(b))
@@ -362,7 +371,7 @@ public class Snake implements Cloneable{
 
 	}
 
-	synchronized static public ByteBuffer encodeAllSnakes(HashMap<Integer, Snake> S) {
+	synchronized static public ByteBuffer encodeAllSnakes(HashMap<Integer, Snake> S, List<Point> wall) {
 		LinkedList<ByteBuffer> tmp = new LinkedList<ByteBuffer>();
 		int size = 0;
 		for (Snake s : S.values()) {
@@ -370,7 +379,10 @@ public class Snake implements Cloneable{
 			tmp.add(encodeOneSnake(s));
 			size += tmp.getLast().capacity();
 		}
-		ByteBuffer buf = ByteBuffer.allocate(size + 2+2+2 +1+3*Constants.playerNr);//+2 for the food; 1,1,3*x - for scores
+
+		int wallSize = 1 + (wall.size() * 2);
+
+		ByteBuffer buf = ByteBuffer.allocate(size + 2+2+2 +1+(3*Constants.playerNr) + wallSize);//+2 for the food; 1,1,3*x - for scores
 		byte nb = (byte) S.size();
 		buf.put((byte) 2);// TYPE
 		buf = BufferHandler.sendScoresToCurrentBuff(S, buf);
