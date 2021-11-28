@@ -1,7 +1,9 @@
 package utilities;
 
 
-public class Point {
+import utilities.TemplateMethod.BaseGrid;
+
+public class Point extends BaseGrid {
 	public int x, y;
 	
 	public Point(int x, int y) {

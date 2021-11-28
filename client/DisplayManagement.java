@@ -1,9 +1,6 @@
 package client;
 
-import utilities.Bridge.Green;
-import utilities.Bridge.ObjectColor;
-import utilities.Bridge.Red;
-import utilities.Factory.ObjectColorFlyweightFactory;
+import utilities.TemplateMethod.Grid;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,6 +16,7 @@ public class DisplayManagement extends JComponent implements KeyListener {
 			cellSize = 10;
 	private byte[][] gate; // la gate est calculee par un autre thread
 	private JFrame graph;
+	private Grid grid;
 	private ArrayBlockingQueue<Byte> requestDir;
 	private JLabel a = new JLabel();
 	private final int size = utilities.GameOptions.gridSize;
@@ -44,36 +42,26 @@ public class DisplayManagement extends JComponent implements KeyListener {
 	}
 
 	private void setgraph(String serverName, int num) {
-		graph = new JFrame(serverName.toUpperCase());
-		addKeyListener(this);
-		graph.setBounds(400, 100, (size+1) * cellSize, (size + 3) * cellSize);
+		grid = new Grid(serverName.toUpperCase());
+		grid.setBounds(400, 100, (size+1) * cellSize, (size + 3) * cellSize);
 		a.setBounds(size * cellSize/4,size * cellSize/2, size * cellSize, size * cellSize/4);
-		graph.add(a);
-		graph.add(this);
+		grid.getFrames().add(a);
+		grid.getFrames().add(this);
 		setFocusable(true);
 		requestFocusInWindow();
-		graph.setVisible(true);
+		grid.getFrames().setVisible(true);
 		setFocusable(true);
+		graph = grid.getFrames();
+		addKeyListener(this);
 	}
 
 	@Override
 	public void paintComponent(Graphics g) {
 		for (int i = 0; i < size; i++)
-			for (int j = 0; j < size; j++)
-				fill(g, i, j, gate[i][j]);
+			for (int j = 0; j < size; j++) {
+				grid.fill(g, i, j, gate[i][j]);
+			}
 		// this.remove(a);
-	}
-
-	private void fill(Graphics g, int i, int j, byte color) {
-        ObjectColor colorRed = ObjectColorFlyweightFactory.getObjectColor("poison", new Red());
-        ObjectColor colorGreen =ObjectColorFlyweightFactory.getObjectColor("food", new Green());
-		g.setColor((color == EMPTY) ? Color.WHITE
-				: (color == FULL) ? Color.BLACK : (color == APPLE) ? colorRed.colorize()
-				: (color == PERSO) ? Color.blue  : (color == POISON) ? colorGreen.colorize()
-				: color == WALL ? Color.CYAN : Color.gray);
-
-		g.fillRect(i * cellSize + cellSize / 16, j * cellSize + cellSize / 16,
-				cellSize - cellSize / 8, cellSize - cellSize / 8);
 	}
 
 	@Override
