@@ -3,12 +3,14 @@ package game;
 import utilities.Client;
 import utilities.Job;
 import utilities.Runnable_Input;
+import utilities.State.State;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.concurrent.ArrayBlockingQueue;
 
 public class G_Manager implements Runnable {
+	private State state;
 	public Game thisGame;
 
 	public volatile boolean sendGameInfo;
@@ -41,12 +43,15 @@ public class G_Manager implements Runnable {
 		System.out.println("\t> output Thread initialized");
 
 		System.out.println("\t> END");
-
 		sendGameInfo = true;
 		sendTimer = false;
 		gameToBeOver = false;
 		gameOver = false;
 		sendScore = false;
+	}
+
+	public void changeState(State state) {
+		this.state = state;
 	}
 
 	@Override
@@ -65,7 +70,7 @@ public class G_Manager implements Runnable {
 
 			sendTimer = true;
 			G_ManagerFacade.SendTimer(out_communicators);
-
+//			G_ManagerFacade.PauseTimer(out_communicators);
 			sendTimer = false;
 
 			Thread.sleep(1000);
@@ -76,7 +81,8 @@ public class G_Manager implements Runnable {
 			Thread moveSnakes;
 			moveSnakes = new Thread(new G_MoveSnakes(thisGame));
 			moveSnakes.start();
-
+			Thread.sleep(1000);
+			G_ManagerFacade.PauseTimer(out_communicators);
 			byte id = -1;
 			gameToBeOver = false;
 			while (!gameOver) {
@@ -107,7 +113,6 @@ public class G_Manager implements Runnable {
 
 			Thread.sleep(2000);
 			sendScore = false;
-
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

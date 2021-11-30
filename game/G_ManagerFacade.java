@@ -21,6 +21,20 @@ public class G_ManagerFacade {
         }
     }
 
+    public static void PauseTimer(HashMap<Client, ArrayBlockingQueue<Job>> out_communicators) throws InterruptedException {
+        for (byte timer = 1; timer < 5; timer++) {
+            for (Client c : out_communicators.keySet()) {
+                Job j = new Job(Job.Type.SEND_TIMER);
+                j.timer(timer);
+                out_communicators.get(c).put(j);
+                System.out.println("G_Manager sent job \"" + j.type()
+                        + "\" to Runnable_Output for Client " + c.id);
+
+            }
+            Thread.sleep(950);// a bit less than a second
+        }
+    }
+
     public static void SendPositions (HashMap<Client, ArrayBlockingQueue<Job>> out_communicators, int inputPort) throws InterruptedException {
         for (Client c : out_communicators.keySet()) {
             Job j = new Job(Job.Type.SEND_POSITIONS);
