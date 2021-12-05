@@ -1,4 +1,7 @@
 package client;
+
+import utilities.Mediator.ServerParametersMediator;
+
 import java.net.InetSocketAddress;
 import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
@@ -10,18 +13,12 @@ import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.LinkedBlockingDeque;
 
 
-public class Client{
-	// server est initialisé dans le readBufferWaitPlayerServer et utile dans lancerSpeaker
-	private InetSocketAddress server;
-	// créée dans launchingListener et utile pour lancerAffichage, gateJobs contient les serpents envoye par le serveur, la liste est partagée entre le client listener aui la remplit et le administrator de la gate qui la EMPTY
+public class Client {
+	private ServerParametersMediator parameters;
 	private ArrayBlockingQueue<Triplet<HashMap<Byte, Snake>, Point, Point, List <Point>>> gateJobs;
-	// créée dans lancerAffichage et utile pour lancerSpeaker, directionIdJobs est remplie par le administrator de direction et vidée par le sender
 	private BlockingDeque<Pair<Byte,Byte>> directionIdJobs;
-	// pour envoyer le message je veux joueur tant qu'on ne recoit pas de message du serveur
 	protected volatile boolean notReceivedPortGame = true;
-	private String serverName;
 	private ManageRequestDirection gest;
-	private DisplayManagement window = null;
 	public static Client instance;
 
 	static {
@@ -35,7 +32,8 @@ public class Client{
 	// on recupere sur le port 5656, le serveur et le port avec lequel on
 	// communique avec le serveur, on dit au serveur de nous parler sur 5959
 	private Client() throws Exception{
-			launchingListener((short) 5959, readBufferWaitPlayerServer(5656));
+		parameters = new ServerParametersMediator();
+		launchingListener((short) 5959, readBufferWaitPlayerServer(5656));
 	}
 
 	public static Client getInstance() throws Exception {
@@ -46,9 +44,9 @@ public class Client{
 	}
 
 	private void launchingListener(short listeningPort, short sendPort) throws Exception {
-		gateJobs = new ArrayBlockingQueue<Triplet<HashMap<Byte, Snake>, Point, Point, List<Point>>>(1);
+		gateJobs = new ArrayBlockingQueue<>(1);
 		new Thread(new Client_listener(gateJobs, listeningPort, this)).start();
-		envoieServer(listeningPort, sendPort, server);
+		envoieServer(listeningPort, sendPort, parameters.getServer());
 	}
 	
 
@@ -56,13 +54,13 @@ public class Client{
 		directionIdJobs = new LinkedBlockingDeque<Pair<Byte,Byte>>(5);
 		ArrayBlockingQueue<Byte> directionJobs = new ArrayBlockingQueue<Byte>(5);
 		gest = new ManageRequestDirection(directionIdJobs, directionJobs);
-		window = new DisplayManagement(serverName, number, directionJobs);
-		new Thread(new ManagementBackgate(gateJobs, window, number, gest)).start();
+		parameters.setWindow(new DisplayManagement(parameters.getServerName(), number, directionJobs));
+		new Thread(new ManagementBackgate(gateJobs, parameters.getWindow(), number, gest)).start();
 	}
 
 
 	void lancerSpeaker(byte number, short gamePort) {
-		new Thread(new Client_sender(server, directionIdJobs, gamePort, number)).start();
+		new Thread(new Client_sender(parameters.getServer(), directionIdJobs, gamePort, number)).start();
 	}
 	
 	void lanceradministratorDirection(){
@@ -71,8 +69,8 @@ public class Client{
 	
 	public void print(String string) {
 		//text.setText(string);
-		if(window!=null)
-			window.print(string);
+		if (parameters.getWindow() != null)
+			parameters.getWindow().print(string);
 	}
 
 	private void envoieServer(short listeningPort, short portConnection,
@@ -115,15 +113,20 @@ public class Client{
 
 		ByteBuffer buffer = ByteBuffer.allocate(1024);
 
-		server = (InetSocketAddress) clientSocket
+		InetSocketAddress server = (InetSocketAddress) clientSocket
 				.receive(buffer);
+
+		parameters.setServer(server);
+
 		buffer.flip();
 		try {
 
 			byte nbChar = buffer.get();
-			serverName = "";
+			String serverName = "";
 			for (int i = 0; i < nbChar; i++)
 				serverName += (char) buffer.get();
+
+			parameters.setServerName(serverName);
 
 			short portConnection = buffer.getShort();
 
