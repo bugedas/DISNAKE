@@ -2,6 +2,10 @@ package client;
 
 import Observer.Editor;
 import Observer.LogListener;
+import utilities.Iterator.ScoreCollection;
+import utilities.Iterator.Iterator;
+import utilities.Iterator.Score;
+
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -86,14 +90,19 @@ public class Client_listener implements Runnable {
 		}
 	}
 
+
 	private String lireBufferFinal(ByteBuffer buffer) throws IOException {
-		String s = "<HTML><h2>The game is over. Scores :</h2>";
+        ScoreCollection allscores = new ScoreCollection();
+        Iterator scoresIterator = allscores.createIterator();
+		//String s = "<HTML><h2>The game is over. Scores :</h2>";
 		byte nbSnakes = buffer.get();
 		for (int i = 0; i < nbSnakes; i++) {
 			byte num = buffer.get();
 			short score = buffer.getShort();
-			s += "<h3>Snake " + num + " has " + score + " points</h3>";
+            allscores.addScore(score);
+			//s += "<h3>Snake " + num + " has " + score + " points</h3>";
 		}
+        String s = printFinalScores(nbSnakes,scoresIterator);
 		Editor editor = new Editor();
 		editor.events.subscribe("update", new LogListener("Scores.txt"));
 
@@ -108,8 +117,23 @@ public class Client_listener implements Runnable {
 		String scores = Files.readString(Path.of("./Observer/Scores.txt"), StandardCharsets.US_ASCII);
 		return scores+"</HTML>";
 	}
+    private String printFinalScores(byte snakeNumbers, Iterator scoresIterator)
+    {
+        String s = "<HTML><h2>The game is over. Scores :</h2>";
+        int j = snakeNumbers;
+        while (scoresIterator.hasNext())
+        {
+            Score score = (Score) scoresIterator.next();
+            s += "<h3>Snake " + j + " has " + score.getScore() + " points</h3>";
+            j--;
+
+        }
+        return s;
+    }
+
 
 	private String printScores(ByteBuffer buffer) throws IOException {
+
 		String s = "<HTML><h2>Scores :</h2>";
 		byte nbSnakes = buffer.get();
 		for (int i = 0; i < nbSnakes; i++) {
