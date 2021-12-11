@@ -13,7 +13,7 @@ public class  LaunchServer {
 		GameHandlerBuilder manager = new GameHandlerBuilder();
 		manager.setInputPort(5757);
 		manager.setOutputPort(5656);
-		manager.setServerName("Snakes Server");
+		manager.setServerName("The snakes");
 		manager.setBroadcastTimeInterval(2000);
 		manager.setNbp(nbJoueur);
 		GH_Manager gameHandler = manager.build();
