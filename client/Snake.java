@@ -2,7 +2,6 @@ package client;
 import java.awt.Color;
 import java.util.LinkedList;
 
-// La classe Snake code les serpents sur une liste de points
 public class Snake {
 	public byte direction;
 	byte number;
@@ -26,7 +25,6 @@ public class Snake {
 	}
 }
 
-// Les points sont deux coordonnees et une couleur
 class Point {
 	int x, y;
 	Color color;

@@ -1,5 +1,7 @@
 package utilities;
 
+import utilities.Interpreter.DirectionExpression;
+
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -375,7 +377,6 @@ public class Snake implements Cloneable{
 		LinkedList<ByteBuffer> tmp = new LinkedList<ByteBuffer>();
 		int size = 0;
 		for (Snake s : S.values()) {
-			// System.out.println("encodage du Snake  "+i);
 			tmp.add(encodeOneSnake(s));
 			size += tmp.getLast().capacity();
 		}
@@ -397,26 +398,8 @@ public class Snake implements Cloneable{
 	}
 
 	static byte findDirection(Point queue, Point succ) {
-		// Attention, la direction va de A vers B
-		if ((succ.x) % GameOptions.gridSize == (queue.x + 1)
-				% GameOptions.gridSize) {
-			return 2;
-		}
-		if ((succ.x+1) % GameOptions.gridSize == (queue.x)
-				% GameOptions.gridSize) {
-			return 0;
-		}
-		if ((succ.y) % GameOptions.gridSize == (queue.y + 1)
-				% GameOptions.gridSize) {
-			return 3;
-		}
-		if ((succ.y+1) % GameOptions.gridSize == (queue.y)
-				% GameOptions.gridSize) {
-			return 1;
-		}
-		System.out.println("ERROR : POINTS ARE NOT CLOSE TO EACH OTHER");
-		return 4;
-
+		DirectionExpression directionExpression = new DirectionExpression(GameOptions.gridSize);
+		return directionExpression.interpreter(queue, succ);
 	}
 
 	public static void main(String[] args) {

@@ -22,14 +22,11 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 // TEST OK
 public class Client_listener implements Runnable {
-	// le serveur EMPTY la file avant de mettre un nouvel element
 	private ArrayBlockingQueue<Triplet<HashMap<Byte, Snake>, Point, Point, List <Point>>> gateJobs;
-	private DatagramChannel listenerChannel; // sur le portEcoute
+	private DatagramChannel listenerChannel;
 	private Client client;
 	private boolean pasLancerDir = true;
 
-	// le serveur EMPTY la file avant de mettre un nouvel element, ne marche
-	// parce qu'un seul thread remplit la file
 	protected Client_listener(ArrayBlockingQueue<Triplet<HashMap<Byte, Snake>, Point, Point, List <Point>>> jobs, short listeningPort,
 							  Client c) {
 		gateJobs = jobs;
@@ -57,8 +54,6 @@ public class Client_listener implements Runnable {
 						client.notReceivedPortGame = false;
 						short gamePort = buffer.getShort();
 						byte number = buffer.get();
-						// On a port de jeu = gamePort et number de client =
-						// number
 						client.lancerAffichage(number);
 						client.lancerSpeaker(number, gamePort);
 					}
@@ -82,7 +77,7 @@ public class Client_listener implements Runnable {
 					}
 					break;
 				default:
-					throw new Exception("Le message du server de Jeu est corrompu");
+					throw new Exception("Error");
 				}
 				buffer.clear();
 			}
@@ -148,14 +143,11 @@ public class Client_listener implements Runnable {
 
 	private void lireSerpents(ByteBuffer buffer) throws Exception {
 		Triplet<HashMap<Byte, Snake>, Point, Point, List <Point>> req = decodeBufferToGame(buffer);
-		// ici on enleve tous les elements de la file pour ne prendre en compte
-		// que le dernier, marche car un seul thread remplit la file
 		while (gateJobs.size() > 0)
 			gateJobs.poll();
 		gateJobs.put(req);
 	}
 
-	// fonction decode
 	private static Triplet<HashMap<Byte, Snake>, Point, Point, List <Point>> decodeBufferToGame(ByteBuffer buf) throws Exception {
 		HashMap<Byte, Snake> snakes = new HashMap<Byte, Snake>();
 		try {

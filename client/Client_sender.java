@@ -28,16 +28,14 @@ public class Client_sender implements Runnable {
 			DatagramChannel speakerChannel = DatagramChannel.open();
 			speakerChannel.socket().bind(new InetSocketAddress(0));
 			InetSocketAddress remote = new InetSocketAddress(server.getAddress(), gamePort);
-			while (true) { // A REVOIR
-				synchronized (directionJobs) { // on attend la notification : on a un element
+			while (true) {
+				synchronized (directionJobs) {
 					Pair<Byte,Byte> dirId = directionJobs.peek();
 					if (dirId==null) {
-						// System.out.println("Sender : il n'y a pas encore d'element, j'attends...");
 						directionJobs.wait();
 					}
 					else speakerChannel.send(changeDirection(number, dirId), remote);
 					Thread.sleep(5);
-					// Envoie demande nouvelle direction sur gamePort
 				}
 			}
 		} catch (IOException | InterruptedException e) {
