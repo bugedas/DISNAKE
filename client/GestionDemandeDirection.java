@@ -32,8 +32,6 @@ class ManageRequestDirection implements Runnable { //gali but reikia public
 	}
 
 	public void setDirection(byte directionBis) {
-		// System.out.println("appele a setDirection avec direction = " +
-		// directionBis); pas cacul par gestion affichage new thread
 		direction = directionBis;
 		if (!directionJobs.isEmpty()) {
 			byte maDirection = directionJobs.element().a;

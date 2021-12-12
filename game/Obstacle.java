@@ -53,9 +53,13 @@ public class Obstacle implements ObstacleInterface {
     }
 
     public List<Point> generateWall(){
-        Point start = new Point((int) ((Math.random() * (55 - 15)) + 15), (int) ((Math.random() * (55 - 15)) + 15));
-        Point end = new Point((int) ((Math.random() * (55 - 15)) + 15), (int) ((Math.random() * (55 - 15)) + 15));
-        addObstacle(start, end);
+
+        for(int i = 0; i < 3; i++) {
+            Point start = new Point((int) ((Math.random() * (55 - 15)) + 15), (int) ((Math.random() * (55 - 15)) + 15));
+            Point end = new Point((int) ((Math.random() * (55 - 15)) + 15), (int) ((Math.random() * (55 - 15)) + 15));
+            addObstacle(start, end);
+        }
+
         return this.body;
     }
 

@@ -99,9 +99,9 @@ public class Game extends Thread {
 	}
 	
 	public void resetFood(){
-		this.food = new EatableDecorator(foodFactory.getFood(this.foodChange % this.foodTypes));
-		this.drink = new EatableDecorator(drinkFactory.getDrink(this.drinkChange % this.drinkTypes));
-		this.badFood = new EatableDecorator(foodFactory.getFood(this.foodChange % this.foodTypes));
+		this.food = new EatableDecorator(foodFactory.getFood(0));
+		this.drink = new EatableDecorator(drinkFactory.getDrink(0));
+		this.badFood = new EatableDecorator(foodFactory.getFood(1));
 		this.badDrink = new EatableDecorator(drinkFactory.getDrink(this.drinkChange % this.drinkTypes));
 	}
 

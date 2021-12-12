@@ -3,7 +3,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 
-// OK : calcule la nouvelle gate a afficher a partir des hashmaps de serpent
 class ManagementBackgate implements Runnable {
 	private ArrayBlockingQueue<Triplet<HashMap<Byte, Snake>, Point, Point, List <Point>>> gateJobs;
 	private DisplayManagement gameDisplay;
@@ -23,7 +22,6 @@ class ManagementBackgate implements Runnable {
 		try {
 			while (true) {
 				Triplet<HashMap<Byte, Snake>, Point, Point, List <Point>> req = (Triplet<HashMap<Byte, Snake>, Point, Point, List <Point>>) gateJobs.take();
-				// System.out.print("On a recu un packet de serpents... ");
 				byte[][] backgate = calculBackgate(req.a);
 				backgate[req.b.x][req.b.y] = DisplayManagement.APPLE;
 				backgate[req.c.x][req.c.y] = DisplayManagement.POISON;
@@ -39,7 +37,6 @@ class ManagementBackgate implements Runnable {
 	}
 
 	private byte[][] calculBackgate(HashMap<Byte, Snake> req) {
-		// System.out.print("On appele calculBackgate... ");
 		byte[][] gate = new byte[size][size];
 		for (Snake s : req.values())
 			afficher(s, gate);
@@ -47,10 +44,8 @@ class ManagementBackgate implements Runnable {
 	}
 	
 	private void afficher(Snake s, byte[][] gate) {
-		// System.out.print("On regarde le serpent number " + s.number + "... ");
 		byte couleur = DisplayManagement.FULL;
 		if(s.number ==myNumber){
-			// System.out.println("je vais dans la direction " + s.direction);
 			couleur = DisplayManagement.PERSO;
 			administrator.setDirection(s.direction);
 		}

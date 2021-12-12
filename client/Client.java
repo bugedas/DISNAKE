@@ -29,8 +29,6 @@ public class Client {
 		}
 	}
 
-	// on recupere sur le port 5656, le serveur et le port avec lequel on
-	// communique avec le serveur, on dit au serveur de nous parler sur 5959
 	private Client() throws Exception{
 		parameters = new ServerParametersMediator();
 		launchingListener((short) 5959, readBufferWaitPlayerServer(5656));
