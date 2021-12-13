@@ -1,6 +1,8 @@
 package game;
 
 import decorator.EatableDecorator;
+import game.Visitor.ObstaclePart;
+import game.Visitor.ObstaclePartDisplayVisitor;
 import interfaces.Eatable;
 import interfaces.ObstacleInterface;
 import utilities.*;
@@ -36,6 +38,7 @@ public class Game extends Thread {
 	public Eatable badFood;
 	public Eatable badDrink;
     public ObstacleInterface obstacle = new ObstacleProxy();
+	public ObstaclePart obs = new Obstacle();
 	public G_Manager manager;
 	private long multicastTimeInterval = 50;// 50 ms
 	
@@ -43,6 +46,7 @@ public class Game extends Thread {
 	public Game(int maxPlayers, int inputPort) throws IOException {
 		this.maxPlayers = maxPlayers;
 		this.gameName = "Test";//TODO
+		obs.accept(new ObstaclePartDisplayVisitor());
 		
 		s1=new Snake(new Point(0,0),15,(byte)1);
 		s2=new Snake(new Point(40,40),15,(byte)2);
