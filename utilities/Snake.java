@@ -1,5 +1,6 @@
 package utilities;
 
+import utilities.Interpreter.CollisionExpression;
 import utilities.Interpreter.DirectionExpression;
 
 import java.nio.ByteBuffer;
@@ -47,6 +48,7 @@ public class Snake implements Cloneable{
 	public byte id;
 	public int score;
 	LinkedList<Point> points; // last element is head
+	public CollisionExpression collisionExpression = new CollisionExpression((byte) 0);
 
 	public Snake(Point point, int size, byte id) {
 		this.id = id;
@@ -196,14 +198,12 @@ public class Snake implements Cloneable{
 	}
 
 	synchronized public boolean isInCollision(Point a) {
-		if (a.equals(head) && a!=head)
-			return true;
-		return false;
+		return collisionExpression.interpreter(a, head) == 1;
 	}
 
 	synchronized public boolean isInCollisionWithWall(List<Point> wall) {
 		for(Point w : wall){
-			if (w.equals(head) && w!=head)
+			if (collisionExpression.interpreter(w, head) == 1)
 				return true;
 		}
 		return false;
