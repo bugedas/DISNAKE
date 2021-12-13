@@ -1,5 +1,9 @@
 package game;
 
+import game.Visitor.ObstaclePart;
+import game.Visitor.ObstaclePartVisitor;
+import game.Visitor.WallShape;
+import game.Visitor.WallSize;
 import interfaces.ObstacleInterface;
 import utilities.Point;
 
@@ -7,10 +11,12 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Obstacle implements ObstacleInterface {
+public class Obstacle implements ObstacleInterface, ObstaclePart {
     public List<Point> body = new ArrayList<>();
+    ObstaclePart[] parts;
 
     public Obstacle(){
+        parts = new ObstaclePart[] {new WallShape(), new WallSize()};
         generateWall();
     }
 
@@ -61,6 +67,14 @@ public class Obstacle implements ObstacleInterface {
         }
 
         return this.body;
+    }
+
+    @Override
+    public void accept(ObstaclePartVisitor obstaclePartVisitor) {
+        for (int i = 0; i < parts.length; i++) {
+            parts[i].accept(obstaclePartVisitor);
+        }
+        obstaclePartVisitor.visit(this);
     }
 
     public List<Point> getWall(){
