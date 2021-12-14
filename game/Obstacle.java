@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Obstacle implements ObstacleInterface, ObstaclePart {
+
     public List<Point> body = new ArrayList<>();
     ObstaclePart[] parts;
 
@@ -19,7 +20,9 @@ public class Obstacle implements ObstacleInterface, ObstaclePart {
         parts = new ObstaclePart[] {new WallShape(), new WallSize()};
         generateWall();
     }
-
+    public List<Point> getBody(){
+        return this.body;
+    }
     public void addObstacle(Point start, Point end) {
         int startX = start.getX();
         int endX = end.getX();
